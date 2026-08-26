@@ -627,18 +627,22 @@
     },
 
     // Offline Mode Simulator
-    toggleOfflineMode: function () {
-      AppState.isOffline = !AppState.isOffline;
+    toggleOfflineMode: function (inputEl) {
+      if (inputEl !== undefined && typeof inputEl.checked === 'boolean') {
+        AppState.isOffline = inputEl.checked;
+      } else {
+        AppState.isOffline = !AppState.isOffline;
+      }
+
       const banner = document.getElementById('offline-cached-banner');
-      const btn = document.getElementById('btn-offline-toggle');
+      const drawerCheck = document.getElementById('drawer-offline-check');
+      if (drawerCheck) drawerCheck.checked = AppState.isOffline;
 
       if (AppState.isOffline) {
         if (banner) banner.classList.remove('hidden');
-        if (btn) btn.style.color = '#EF4444';
-        showToast('تم تفعيل وضع عدم الاتصال: يتم استخدام البيانات المحفوظة محلياً (Cached Data)', 'warning');
+        showToast('تم تفعيل وضع عدم الاتصال: يتم استخدام البيانات المحفوظة محلياً (Offline Cache)', 'warning');
       } else {
         if (banner) banner.classList.add('hidden');
-        if (btn) btn.style.color = '';
         showToast('تمت استعادة الاتصال بالإنترنت ومزامنة البيانات ⚡', 'success');
       }
     },
@@ -885,7 +889,7 @@
       if (scrollEl) scrollEl.scrollTo({ top: 0, behavior: 'smooth' });
     },
 
-    // RICH PRODUCT DETAILS PAGE / MODAL
+    // DEDICATED FULL-SCREEN PRODUCT DETAILS PAGE
     openProductDetails: function (prodId) {
       const prod = MOCK_DATA.products.find(p => p.id === prodId);
       if (!prod) return;
@@ -893,100 +897,170 @@
       AppState.currentDetailProductId = prodId;
       AppState.detailSelectedQty = 1;
 
-      document.getElementById('detail-prod-title').innerText = prod.name;
-      const body = document.getElementById('detail-product-body');
-      
-      const isFav = AppState.favorites.includes(prod.id);
+      const headerTitle = document.getElementById('page-prod-header-title');
+      if (headerTitle) headerTitle.innerText = prod.name;
 
-      body.innerHTML = `
-        <div class="product-detail-modal-layout">
-          <!-- Main Hero Image Gallery -->
-          <div class="detail-gallery-wrap">
-            <div class="detail-main-img-box">
-              <img id="detail-hero-image" src="${prod.image}" alt="${prod.name}">
-              ${prod.badge ? `<span class="detail-badge-pill">${prod.badge}</span>` : ''}
-              <button class="detail-fav-btn ${isFav ? 'active' : ''}" onclick="window.FarmateApp.toggleFavorite('${prod.id}', this)" title="إضافة إلى المفضلة">
+      const topFavBtn = document.getElementById('btn-prod-fav-top');
+      const isFav = AppState.favorites.includes(prod.id);
+      if (topFavBtn) {
+        topFavBtn.innerHTML = `
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="${isFav ? '#EF4444' : 'none'}" stroke="${isFav ? '#EF4444' : 'currentColor'}" stroke-width="2"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg>
+        `;
+      }
+
+      const cartBadge = document.getElementById('product-page-cart-badge');
+      if (cartBadge) {
+        const totalQty = AppState.cart.reduce((sum, item) => sum + item.qty, 0);
+        cartBadge.innerText = totalQty;
+      }
+
+      const body = document.getElementById('product-page-scroll-body');
+      const dock = document.getElementById('product-page-bottom-dock');
+      const relatedProds = MOCK_DATA.products.filter(p => p.id !== prod.id).slice(0, 4);
+
+      if (body) {
+        body.innerHTML = `
+          <div class="product-page-inner">
+            <!-- Hero Gallery Container -->
+            <div class="product-hero-card">
+              <img id="detail-page-img" src="${prod.image}" alt="${prod.name}" class="product-hero-img">
+              ${prod.badge ? `<span class="product-hero-badge">${prod.badge}</span>` : ''}
+              <button class="hero-fav-circle ${isFav ? 'active' : ''}" onclick="window.FarmateApp.toggleFavorite('${prod.id}'); window.FarmateApp.openProductDetails('${prod.id}');" title="حفظ بالمفضلة">
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="${isFav ? '#EF4444' : 'none'}" stroke="${isFav ? '#EF4444' : '#fff'}" stroke-width="2.2"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg>
               </button>
             </div>
-          </div>
 
-          <!-- Supplier & Rating Row -->
-          <div class="detail-meta-top">
-            <div class="detail-supplier-tag">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-              <span>${prod.supplier}</span>
-              <span class="verified-dot" title="مورد فلاحي معتمد">✓</span>
-            </div>
-            <span class="rating-pill">★ ${prod.rating} (${prod.reviewsCount} تقييم)</span>
-          </div>
+            <!-- Price, Stock & Rating Hero -->
+            <div class="product-header-section glass-panel">
+              <div class="prod-meta-badges">
+                <div class="supplier-pill">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                  <span>${prod.supplier}</span>
+                  <span class="verified-dot" title="مورد فلاحي موثوق">✓</span>
+                </div>
+                <span class="rating-pill">★ ${prod.rating} (${prod.reviewsCount} تقييم فلاحي)</span>
+              </div>
 
-          <!-- Title and Description -->
-          <h3 class="detail-title">${prod.name}</h3>
-          <p class="detail-desc">${prod.description}</p>
+              <h1 class="prod-main-title">${prod.name}</h1>
 
-          <!-- Agricultural Specifications Card -->
-          <div class="detail-specs-box glass-panel">
-            <div class="detail-spec-item">
-              <span class="spec-label">🌱 التركيبة / الصنف:</span>
-              <strong class="spec-value">${prod.specs?.composition || 'صنف ممتاز مطابق للمواصفات'}</strong>
-            </div>
-            <div class="detail-spec-item">
-              <span class="spec-label">⚖️ المقدار والاستعمال:</span>
-              <strong class="spec-value">${prod.specs?.dosage || 'حسب توصيات المرشد الفلاحي'}</strong>
-            </div>
-            <div class="detail-spec-item">
-              <span class="spec-label">📍 المنشأ والاعتماد:</span>
-              <strong class="spec-value">${prod.specs?.origin || 'الجزائر - معتمد'}</strong>
-            </div>
-          </div>
-
-          <!-- Price & Stock Card -->
-          <div class="detail-price-box glass-panel">
-            <div>
-              <span class="price-sub-label">سعر الوحدة (${prod.unit}):</span>
-              <div class="detail-price-val">
-                <span id="detail-unit-price">${prod.price.toLocaleString()} دج</span>
-                ${prod.oldPrice ? `<small class="old-price">${prod.oldPrice.toLocaleString()} دج</small>` : ''}
+              <div class="prod-price-stock-row">
+                <div class="price-stack">
+                  <span class="price-unit-label">سعر الوحدة (${prod.unit}):</span>
+                  <div class="price-val-row">
+                    <strong class="price-val-main">${prod.price.toLocaleString()} دج</strong>
+                    ${prod.oldPrice ? `<span class="old-price-val">${prod.oldPrice.toLocaleString()} دج</span>` : ''}
+                    ${prod.oldPrice ? `<span class="discount-pill">خصم ${Math.round((1 - prod.price/prod.oldPrice)*100)}%</span>` : ''}
+                  </div>
+                </div>
+                <div class="stock-status-pill">
+                  <span class="pulse-dot"></span>
+                  <span>متوفر للشحن الفوري</span>
+                </div>
               </div>
             </div>
-            <span class="stock-status-pill">
-              <span class="pulse-dot"></span>
-              متوفر وجاهز للشحن
-            </span>
-          </div>
 
-          <!-- Quantity Selector & Dynamic Total -->
-          <div class="detail-qty-row">
-            <span class="qty-prompt">الكمية المطلوبة:</span>
-            <div class="detail-qty-counter">
-              <button type="button" class="btn-counter" onclick="window.FarmateApp.changeDetailQty(-1)">-</button>
-              <span class="counter-display" id="detail-qty-display">1</span>
-              <button type="button" class="btn-counter" onclick="window.FarmateApp.changeDetailQty(1)">+</button>
+            <!-- Technical & Agronomic Specifications -->
+            <div class="product-section-card glass-panel">
+              <h4 class="section-card-title">🌱 البطاقة الفنية والتوصيات الزراعية</h4>
+              <div class="specs-table-grid">
+                <div class="spec-cell">
+                  <span class="spec-cell-label">التركيبة الكيميائية / الصنف:</span>
+                  <strong class="spec-cell-val">${prod.specs?.composition || 'صنف ممتاز عالي النقاوة'}</strong>
+                </div>
+                <div class="spec-cell">
+                  <span class="spec-cell-label">المقدار وطريقة الاستعمال:</span>
+                  <strong class="spec-cell-val">${prod.specs?.dosage || 'حسب توصيات المرشد الفلاحي في منطقتك'}</strong>
+                </div>
+                <div class="spec-cell">
+                  <span class="spec-cell-label">بلد المنشأ والاعتماد:</span>
+                  <strong class="spec-cell-val">${prod.specs?.origin || 'الجزائر - مطابق للمواصفات IANOR'}</strong>
+                </div>
+              </div>
             </div>
-            <div class="detail-subtotal-display">
-              <span>الإجمالي:</span>
-              <strong id="detail-calculated-total">${prod.price.toLocaleString()} دج</strong>
+
+            <!-- Agronomic Description & Advice -->
+            <div class="product-section-card glass-panel">
+              <h4 class="section-card-title">📖 الإرشادات الفلاحية وطريقة الاستخدام</h4>
+              <p class="product-full-desc">${prod.description}</p>
+              <div class="expert-tip-box">
+                <span class="tip-icon">💡</span>
+                <div>
+                  <strong>نصيحة المستشار الذكي:</strong>
+                  <span>ينصح بالرش في الصباح الباكر أو المساء لتفادي تبخر المحلول تحت أشعة الشمس وتسهيل امتصاص النبات.</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Related Agricultural Products Carousel -->
+            <div class="related-section-wrap">
+              <div class="related-header">
+                <h4 class="section-card-title">🌾 منتجات فلاحية مكملة ومقترحة</h4>
+                <button class="btn-link" onclick="window.FarmateApp.closeProductPage(); window.FarmateApp.switchTab('tab-store');">عرض الكل ‹</button>
+              </div>
+              <div class="related-products-slider">
+                ${relatedProds.map(rp => `
+                  <div class="related-prod-card" onclick="window.FarmateApp.openProductDetails('${rp.id}')">
+                    <img src="${rp.image}" alt="${rp.name}" class="related-prod-thumb">
+                    <h5 class="related-prod-title">${rp.name}</h5>
+                    <strong class="related-prod-price">${rp.price.toLocaleString()} دج</strong>
+                  </div>
+                `).join('')}
+              </div>
             </div>
           </div>
+        `;
+      }
 
-          <!-- Actions: Add to Cart & Buy Now -->
-          <div class="detail-actions-row">
-            <button class="btn-primary-neon btn-lg flex-1" onclick="window.FarmateApp.addDetailToCart('${prod.id}')">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
-              <span>أضف إلى السلة</span>
-            </button>
-            <button class="btn-buy-direct btn-lg" onclick="window.FarmateApp.buyNowDirect('${prod.id}')">
-              <span>شراء مباشر ⚡</span>
-            </button>
-            <button class="icon-circle-btn" onclick="window.FarmateApp.shareItem('${prod.name}')" title="مشاركة">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
-            </button>
+      if (dock) {
+        dock.innerHTML = `
+          <div class="purchase-dock-inner">
+            <div class="dock-qty-box">
+              <span class="dock-qty-label">الكمية (${prod.unit}):</span>
+              <div class="detail-qty-counter">
+                <button type="button" class="btn-counter" onclick="window.FarmateApp.changeDetailQty(-1)">-</button>
+                <span class="counter-display" id="detail-qty-display">1</span>
+                <button type="button" class="btn-counter" onclick="window.FarmateApp.changeDetailQty(1)">+</button>
+              </div>
+              <strong class="dock-subtotal" id="detail-calculated-total">${prod.price.toLocaleString()} دج</strong>
+            </div>
+
+            <div class="dock-action-buttons">
+              <button class="btn-primary-neon btn-lg flex-1" onclick="window.FarmateApp.addDetailToCart('${prod.id}')">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
+                <span>أضف إلى السلة</span>
+              </button>
+              <button class="btn-buy-direct btn-lg" onclick="window.FarmateApp.buyNowDirect('${prod.id}')">
+                <span>شراء مباشر ⚡</span>
+              </button>
+            </div>
           </div>
-        </div>
-      `;
+        `;
+      }
 
-      window.FarmateApp.openModal('modal-product-detail');
+      // Hide main app & show dedicated product details view
+      document.getElementById('main-app').classList.add('hidden');
+      const pageView = document.getElementById('view-product-details');
+      pageView.classList.remove('hidden');
+      pageView.classList.add('active-view');
+      
+      const scrollContainer = document.getElementById('product-page-scroll-body');
+      if (scrollContainer) scrollContainer.scrollTop = 0;
+    },
+
+    closeProductPage: function () {
+      const pageView = document.getElementById('view-product-details');
+      if (pageView) {
+        pageView.classList.add('hidden');
+        pageView.classList.remove('active-view');
+      }
+      const mainApp = document.getElementById('main-app');
+      if (mainApp) mainApp.classList.remove('hidden');
+    },
+
+    toggleCurrentDetailFav: function () {
+      if (!AppState.currentDetailProductId) return;
+      window.FarmateApp.toggleFavorite(AppState.currentDetailProductId);
+      window.FarmateApp.openProductDetails(AppState.currentDetailProductId);
     },
 
     changeDetailQty: function (delta) {
@@ -1021,12 +1095,17 @@
       }
 
       updateCartUI();
-      window.FarmateApp.closeModal('modal-product-detail');
+      const cartBadge = document.getElementById('product-page-cart-badge');
+      if (cartBadge) {
+        const totalQty = AppState.cart.reduce((sum, item) => sum + item.qty, 0);
+        cartBadge.innerText = totalQty;
+      }
       showToast(`تمت إضافة (${qty}) ${prod.unit} من "${prod.name}" إلى السلة 🛒`, 'success');
     },
 
     buyNowDirect: function (prodId) {
       window.FarmateApp.addDetailToCart(prodId);
+      window.FarmateApp.closeProductPage();
       window.FarmateApp.openCheckoutModal();
     },
 

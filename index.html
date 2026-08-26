@@ -149,17 +149,6 @@
           </div>
 
           <div class="topbar-left">
-            <!-- Simulated Offline Toggle -->
-            <button class="icon-circle-btn" id="btn-offline-toggle" onclick="window.FarmateApp.toggleOfflineMode()" title="تبديل وضع عدم الاتصال" aria-label="حالة الاتصال">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12.55a11 11 0 0 1 14.08 0M1.42 9a16 16 0 0 1 21.16 0M8.53 16.11a6 6 0 0 1 6.95 0M12 20h.01"/></svg>
-            </button>
-
-            <!-- Wallet Pill -->
-            <button class="wallet-pill-btn" onclick="window.FarmateApp.openWalletModal()" aria-label="محفظة الفلاح">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#8B5CF6" stroke-width="2.2"><path d="M21 12V7H5a2 2 0 0 1 0-4h14v4"/><path d="M3 5v14a2 2 0 0 0 2 2h16v-5"/><path d="M18 12a2 2 0 0 0 0 4h4v-4Z"/></svg>
-              <span class="wallet-amount" id="topbar-wallet-amount">185,000 دج</span>
-            </button>
-
             <!-- Notifications Bell -->
             <button class="icon-circle-btn relative" onclick="window.FarmateApp.openDrawer('notifications-drawer')" aria-label="الإشعارات">
               <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
@@ -368,68 +357,50 @@
               </div>
 
               <!-- Interactive Simulated Geo-Map -->
-              <div class="map-simulation-card">
-                <div class="map-backdrop">
-                  <!-- GIS Vector Roads & Parcel Grid -->
-                  <svg class="map-grid-svg" viewBox="0 0 400 170" preserveAspectRatio="none">
-                    <defs>
-                      <pattern id="parcelPattern" width="40" height="40" patternUnits="userSpaceOnUse">
-                        <path d="M 40 0 L 0 0 0 40" fill="none" stroke="rgba(124, 58, 237, 0.12)" stroke-width="1"/>
-                      </pattern>
-                    </defs>
-                    <rect width="100%" height="100%" fill="url(#parcelPattern)"/>
-                    <path d="M0 45 Q120 90 220 35 T400 95" stroke="#C4B5FD" stroke-width="4" fill="none" opacity="0.8"/>
-                    <path d="M60 0 Q90 110 160 170" stroke="#DDD6FE" stroke-width="3" fill="none" opacity="0.7"/>
-                    <path d="M240 0 Q270 120 380 170" stroke="#C4B5FD" stroke-width="3" fill="none" opacity="0.7"/>
-                    <circle cx="130" cy="70" r="35" fill="rgba(139, 92, 246, 0.1)"/>
-                    <circle cx="290" cy="95" r="48" fill="rgba(34, 197, 94, 0.08)"/>
-                  </svg>
-                  
-                  <div class="map-gps-live-badge">
+              <!-- Live Fleet Radar & Quick Dispatch Dashboard (Replaces Fake Map) -->
+              <div class="fleet-radar-card glass-panel">
+                <div class="fleet-radar-header">
+                  <div class="radar-status-badge">
                     <span class="live-dot-pulse"></span>
-                    <span>📡 تتبع مباشر GPS: سطيف وعين ولمان</span>
+                    <strong>رادار العتاد المتاح فوراً</strong>
                   </div>
+                  <span class="fleet-count-tag">14 عتاد وشاحنة جاهزة ⚡</span>
+                </div>
 
-                  <!-- Professional Machine Map Pins -->
-                  <div class="map-pin pin-1" onclick="window.FarmateApp.openMachineDetails('m1')" title="جرار ماسي فيرغسون 140 حصان">
-                    <div class="pin-card-pill">
-                      <span class="pin-icon">🚜</span>
-                      <div class="pin-text-wrap">
-                        <span class="pin-title">جرار 140 حصان</span>
-                      </div>
+                <div class="fleet-quick-stats-grid">
+                  <div class="fleet-stat-pill" onclick="window.FarmateApp.setMachineryCategory('tractors')">
+                    <span class="f-stat-icon">🚜</span>
+                    <div class="f-stat-info">
+                      <strong class="f-stat-num">6 جرارات</strong>
+                      <small class="f-stat-sub">حرث وزرع فوري</small>
                     </div>
                   </div>
 
-                  <div class="map-pin pin-2" onclick="window.FarmateApp.openMachineDetails('m2')" title="حصادة قمح كلاوس 2022">
-                    <div class="pin-card-pill">
-                      <span class="pin-icon">🌾</span>
-                      <div class="pin-text-wrap">
-                        <span class="pin-title">حصادة كلاوس</span>
-                      </div>
+                  <div class="fleet-stat-pill" onclick="window.FarmateApp.setMachineryCategory('harvesters')">
+                    <span class="f-stat-icon">🌾</span>
+                    <div class="f-stat-info">
+                      <strong class="f-stat-num">4 حصادات</strong>
+                      <small class="f-stat-sub">قمح وشعير</small>
                     </div>
                   </div>
 
-                  <div class="map-pin pin-3" onclick="window.FarmateApp.openMachineDetails('m3')" title="شاحنة نقل محاصيل 10 طن">
-                    <div class="pin-card-pill">
-                      <span class="pin-icon">🚛</span>
-                      <div class="pin-text-wrap">
-                        <span class="pin-title">شاحنة 10 طن</span>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div class="map-pin pin-4" onclick="window.FarmateApp.openMachineDetails('m4')" title="صهريج سقي وتسميد 5000 لتر">
-                    <div class="pin-card-pill">
-                      <span class="pin-icon">💧</span>
-                      <div class="pin-text-wrap">
-                        <span class="pin-title">صهريج 5000 لتر</span>
-                      </div>
+                  <div class="fleet-stat-pill" onclick="window.FarmateApp.setMachineryCategory('logistics')">
+                    <span class="f-stat-icon">🚛</span>
+                    <div class="f-stat-info">
+                      <strong class="f-stat-num">4 شاحنات</strong>
+                      <small class="f-stat-sub">نقل مبرد وعادي</small>
                     </div>
                   </div>
                 </div>
 
-                <div class="map-overlay-info">
-                  <span>📍 تم العثور على <strong>14 عتاد وشاحنة متوفرة</strong> قرب موقعك الحالي (سطيف)</span>
+                <div class="fleet-action-banner" onclick="window.FarmateApp.openAddListingModal()">
+                  <div class="action-banner-text">
+                    <strong>هل تملك جراراً أو عتاداً فلاحياً؟</strong>
+                    <span>أضف عتادك الآن وابدأ في تأجيره للفلاحين</span>
+                  </div>
+                  <button class="btn-primary-neon btn-sm" onclick="event.stopPropagation(); window.FarmateApp.openAddListingModal()">
+                    <span>+ أضف عتادك</span>
+                  </button>
                 </div>
               </div>
 
@@ -699,7 +670,7 @@
             <div class="nav-icon-wrap">
               <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="3" width="15" height="13" rx="2"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
             </div>
-            <span class="nav-label">الآلات والنقل</span>
+            <span class="nav-label">العتاد</span>
           </button>
 
           <!-- Item 4: الطقس -->
@@ -721,6 +692,38 @@
         </nav>
 
       </div>
+
+      <!-- ========================================================================= -->
+      <!-- VIEW: DEDICATED FULL-SCREEN PRODUCT DETAILS PAGE -->
+      <!-- ========================================================================= -->
+      <section id="view-product-details" class="app-view product-details-view hidden">
+        <!-- Sticky Product Page Topbar -->
+        <header class="product-page-topbar">
+          <button class="btn-back-circle" onclick="window.FarmateApp.closeProductPage()" aria-label="رجوع للمتجر">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
+          </button>
+          <h3 class="product-page-header-title" id="page-prod-header-title">تفاصيل المنتج</h3>
+          <div class="product-page-top-actions">
+            <button class="icon-circle-btn" id="btn-prod-fav-top" onclick="window.FarmateApp.toggleCurrentDetailFav()" title="المفضلة" aria-label="المفضلة">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg>
+            </button>
+            <button class="icon-circle-btn relative" onclick="window.FarmateApp.openDrawer('cart-drawer')" aria-label="سلة المشتريات">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="8" cy="21" r="1"/><circle cx="19" cy="21" r="1"/><path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"/></svg>
+              <span class="badge-count" id="product-page-cart-badge">2</span>
+            </button>
+          </div>
+        </header>
+
+        <!-- Product Page Scrollable Body -->
+        <div class="product-page-scrollable" id="product-page-scroll-body">
+          <!-- Dynamically injected via script.js -->
+        </div>
+
+        <!-- Product Page Floating Purchase Dock -->
+        <div class="product-page-bottom-dock" id="product-page-bottom-dock">
+          <!-- Dynamically injected via script.js -->
+        </div>
+      </section>
 
       <!-- ========================================================================= -->
       <!-- MODALS & DRAWERS (SLIDE-IN SHEETS) -->
@@ -753,18 +756,22 @@
             </div>
           </div>
 
-          <!-- Wallet Quick Overview -->
-          <div class="drawer-wallet-box glass-panel">
+          <!-- Wallet Quick Overview (Clickable to Full Wallet Modal) -->
+          <div class="drawer-wallet-box glass-panel" onclick="window.FarmateApp.openWalletModal()" style="cursor: pointer;" title="انقر لإدارة المحفظة وشحن الرصيد">
             <div class="wallet-stat-row">
               <div>
-                <span class="stat-title">رصيد المحفظة الإجمالي</span>
+                <span class="stat-title">رصيد محفظة الفلاح الإجمالي 💳</span>
                 <h3 class="stat-big-val" id="drawer-wallet-total">185,000 دج</h3>
               </div>
-              <button class="btn-primary-neon btn-sm" onclick="window.FarmateApp.openWithdrawModal()">سحب CCP</button>
+              <button class="btn-primary-neon btn-sm" onclick="event.stopPropagation(); window.FarmateApp.openWithdrawModal()">سحب CCP</button>
             </div>
             <div class="wallet-sub-breakdown">
               <span>قابل للسحب: <strong id="drawer-wallet-withdrawable">143,000 دج</strong></span>
               <span>معلق (مبيعات): <strong id="drawer-wallet-pending">42,000 دج</strong></span>
+            </div>
+            <div class="wallet-hint-bar">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+              <span>انقر لعرض تفاصيل المعاملات وشحن الرصيد</span>
             </div>
           </div>
 
@@ -817,10 +824,24 @@
 
           <!-- Settings Options -->
           <div class="drawer-settings-section">
-            <h5 class="settings-group-title">تخصيص التطبيق</h5>
+            <h5 class="settings-group-title">تخصيص وتفضيلات التطبيق</h5>
             
             <div class="setting-row">
-              <span>الوضع الليلي (Dark Mode)</span>
+              <div class="setting-info-block">
+                <span>وضع عدم الاتصال (Offline Mode)</span>
+                <small class="setting-sub-hint">استخدام البيانات المحفوظة محلياً دون إنترنت</small>
+              </div>
+              <label class="switch-toggle">
+                <input type="checkbox" id="drawer-offline-check" onchange="window.FarmateApp.toggleOfflineMode(this)">
+                <span class="switch-slider"></span>
+              </label>
+            </div>
+
+            <div class="setting-row">
+              <div class="setting-info-block">
+                <span>الوضع الليلي (Dark Mode)</span>
+                <small class="setting-sub-hint">مظهر مريح للعين في الحقول والليل</small>
+              </div>
               <label class="switch-toggle">
                 <input type="checkbox" id="theme-toggle-check" onchange="window.FarmateApp.toggleTheme()">
                 <span class="switch-slider"></span>
@@ -828,7 +849,10 @@
             </div>
 
             <div class="setting-row">
-              <span>لغة الواجهة</span>
+              <div class="setting-info-block">
+                <span>لغة الواجهة</span>
+                <small class="setting-sub-hint">اللغة المعتمدة في الإشعارات والتقارير</small>
+              </div>
               <select class="settings-select" onchange="window.FarmateApp.showToast('تم حفظ تفضيل اللغة العربية', 'success')">
                 <option value="ar" selected>العربية (الافتراضية)</option>
                 <option value="fr">Français</option>
@@ -1024,18 +1048,7 @@
         </div>
       </div>
 
-      <!-- MODAL: PRODUCT DETAIL MODAL -->
-      <div id="modal-product-detail" class="app-modal">
-        <div class="modal-card modal-lg glass-panel">
-          <div class="modal-header">
-            <h3 id="detail-prod-title">تفاصيل المنتج</h3>
-            <button class="btn-close-modal" onclick="window.FarmateApp.closeModal('modal-product-detail')">✕</button>
-          </div>
-          <div class="modal-body" id="detail-product-body">
-            <!-- Injected via script.js -->
-          </div>
-        </div>
-      </div>
+
 
       <!-- MODAL: MACHINERY DETAIL & DIRECT CALL -->
       <div id="modal-machinery-detail" class="app-modal">
