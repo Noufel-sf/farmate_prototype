@@ -1,0 +1,1396 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>FARMATE | فارميت - المنظومة الفلاحية الذكية الأولى في الجزائر</title>
+  <meta name="description" content="فارميت: منصة زراعية ذكية متكاملة تجمع الفلاحين، الموردين، أصحاب العتاد والنقل ومؤسسات التمويل مع مستشار ذكاء اصطناعي فلاحي متخصص.">
+
+  <!-- Google Fonts: Cairo & Tajawal -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;800;900&family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet">
+
+  <!-- Main Stylesheet -->
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="theme-light">
+
+  <!-- Desktop Presentation Wrapper (Renders realistic phone frame on desktop screens) -->
+  <div class="device-viewport">
+    
+    <!-- Top Global Toast Notification Container -->
+    <div id="toast-container" class="toast-container" aria-live="polite"></div>
+
+    <!-- Phone Screen Container (Full Native Experience) -->
+    <main class="mobile-frame" id="app-container">
+
+      <!-- ========================================================================= -->
+      <!-- VIEW: LOGIN SCREEN -->
+      <!-- ========================================================================= -->
+      <section id="view-login" class="app-view active-view">
+        <div class="login-wrapper">
+          <!-- Mascot Hero -->
+          <div class="login-mascot-container">
+            <div class="mascot-avatar animated-float">
+              <!-- SVG Mascot: Farmate Agro-Bot -->
+              <svg class="farmate-bot-svg" viewBox="0 0 160 160" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <!-- Glowing Backdrop -->
+                <circle cx="80" cy="80" r="70" fill="url(#botGlow)" opacity="0.4"/>
+                <!-- Plant Antenna -->
+                <path d="M80 32C80 32 75 14 62 12C62 25 72 32 80 32Z" fill="#10B981"/>
+                <path d="M80 32C80 32 85 14 98 12C98 25 88 32 80 32Z" fill="#34D399"/>
+                <path d="M80 32V42" stroke="#6D28D9" stroke-width="3.5" stroke-linecap="round"/>
+                <!-- Bot Head (Lavender / Sleek White) -->
+                <rect x="36" y="40" width="88" height="66" rx="28" fill="#FFFFFF" stroke="#E9D5FF" stroke-width="3"/>
+                <!-- Bot Screen / Visor -->
+                <rect x="46" y="49" width="68" height="42" rx="18" fill="#1E1B4B"/>
+                <!-- Eyes (Neon Green Friendly Glow) -->
+                <circle class="bot-eye left" cx="64" cy="70" r="8" fill="#10B981"/>
+                <circle class="bot-eye-shine" cx="66" cy="68" r="3" fill="#A7F3D0"/>
+                <circle class="bot-eye right" cx="96" cy="70" r="8" fill="#10B981"/>
+                <circle class="bot-eye-shine" cx="98" cy="68" r="3" fill="#A7F3D0"/>
+                <!-- Cheerful Smile -->
+                <path d="M72 82C75 85 85 85 88 82" stroke="#10B981" stroke-width="2.5" stroke-linecap="round"/>
+                <!-- Bot Ears / Side Sensors -->
+                <circle cx="34" cy="73" r="5" fill="#8B5CF6"/>
+                <circle cx="126" cy="73" r="5" fill="#8B5CF6"/>
+                <!-- Small Leaves Badge on Chest -->
+                <ellipse cx="80" cy="118" width="34" height="24" rx="17" fill="#EDE9FE"/>
+                <path d="M80 110C73 113 74 122 80 125C86 122 87 113 80 110Z" fill="#10B981"/>
+                <defs>
+                  <radialGradient id="botGlow" cx="0.5" cy="0.5" r="0.5">
+                    <stop offset="0%" stop-color="#C084FC"/>
+                    <stop offset="100%" stop-color="#EDE9FE" stop-opacity="0"/>
+                  </radialGradient>
+                </defs>
+              </svg>
+            </div>
+            <div class="login-brand">
+              <h1 class="brand-title">FARMATE <span class="brand-ar">فارميت</span></h1>
+              <p class="brand-tagline">شريكك الفلاحي الذكي في الجزائر 🇩🇿</p>
+            </div>
+          </div>
+
+          <!-- Login Form Card -->
+          <div class="login-card glass-panel">
+            <h2 class="login-heading">تسجيل الدخول </h2>
+            <p class="login-subheading">منصة شاملة للفلاحين، التجّار، وأصحاب العتاد</p>
+
+            <form id="form-login" onsubmit="event.preventDefault(); window.FarmateApp.handleLogin();">
+              <!-- Phone Input Group -->
+              <div class="input-group">
+                <label for="login-phone" class="input-label">رقم الهاتف (الجزائر)</label>
+                <div class="phone-input-wrapper"> 
+                  <span class="country-code">+213</span>
+                  <input type="tel" id="login-phone" class="input-field" placeholder="05 / 06 / 07 XX XX XX" value="05 50 12 34 56" required autocomplete="tel">
+                </div>
+              </div>
+
+              <!-- Password Input Group -->
+              <div class="input-group">
+                <label for="login-password" class="input-label">كلمة المرور</label>
+                <div class="password-input-wrapper">
+                  <input type="password" id="login-password" class="input-field" placeholder="••••••••" value="farmate2026" required autocomplete="current-password">
+                  <button type="button" class="btn-toggle-pwd" onclick="window.FarmateApp.togglePasswordVisibility('login-password')">
+                    <svg class="icon-eye" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                  </button>
+                </div>
+              </div>
+
+              <div class="login-options">
+                <label class="remember-me">
+                  <input type="checkbox" checked id="remember-device">
+                  <span class="custom-checkbox"></span>
+                  <span>تذكرني على هذا الجهاز</span>
+                </label>
+                <button type="button" class="btn-link" onclick="window.FarmateApp.showToast('تم إرسال رمز استرجاع الحساب عبر SMS', 'info')">نسيت كلمة المرور؟</button>
+              </div>
+
+              <!-- Primary Action (Neon Green) -->
+              <button type="submit" class="btn-primary-neon btn-lg w-full shadow-neon">
+                <span>دخول إلى المنظومة</span>
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+              </button>
+            </form>
+
+            <!-- Demo Persona Preset Button -->
+            <div class="demo-badge-bar">
+              <button type="button" class="btn-demo-fill" onclick="window.FarmateApp.fillDemoLogin()">
+                <span class="demo-dot"></span>
+                <span>الحساب التجريبي: عمي رابح (فلاح نموذجي - سطيف)</span>
+              </button>
+            </div>
+          </div>
+
+          <footer class="login-footer">
+            <p>بتسجيل الدخول أنت توافق على <a href="#" onclick="return false;">شروط الخدمة والخصوصية</a></p>
+            <div class="gov-support-tag">مدعوم ضمن مبادرات الرقمنة الفلاحية 2026</div>
+          </footer>
+        </div>
+      </section>
+
+      <!-- ========================================================================= -->
+      <!-- VIEW: MAIN SPA CONTAINER (Rendered when Logged In) -->
+      <!-- ========================================================================= -->
+      <div id="main-app" class="main-app hidden">
+        
+        <!-- Main Top Bar -->
+        <header class="app-topbar">
+          <div class="topbar-right">
+            <button class="topbar-avatar-btn" onclick="window.FarmateApp.openAccountModal()" aria-label="تعديل الملف الشخصي">
+              <img id="topbar-avatar-img" src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&auto=format&fit=crop&q=80" alt="صورة الفلاح رابح" class="user-avatar-img">
+              <span class="online-indicator"></span>
+            </button>
+            <div class="user-greeting-pill" onclick="window.FarmateApp.openDrawer('profile-drawer')" title="فتح القائمة الجانبية للملف الشخصي">
+              <span class="greeting-prefix">مرحباً</span>
+              <strong class="greeting-name" id="topbar-greeting-name">عمي رابح 🌾</strong>
+            </div>
+          </div>
+
+          <div class="topbar-left">
+            <!-- Simulated Offline Toggle -->
+            <button class="icon-circle-btn" id="btn-offline-toggle" onclick="window.FarmateApp.toggleOfflineMode()" title="تبديل وضع عدم الاتصال" aria-label="حالة الاتصال">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12.55a11 11 0 0 1 14.08 0M1.42 9a16 16 0 0 1 21.16 0M8.53 16.11a6 6 0 0 1 6.95 0M12 20h.01"/></svg>
+            </button>
+
+            <!-- Wallet Pill -->
+            <button class="wallet-pill-btn" onclick="window.FarmateApp.openWalletModal()" aria-label="محفظة الفلاح">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#8B5CF6" stroke-width="2.2"><path d="M21 12V7H5a2 2 0 0 1 0-4h14v4"/><path d="M3 5v14a2 2 0 0 0 2 2h16v-5"/><path d="M18 12a2 2 0 0 0 0 4h4v-4Z"/></svg>
+              <span class="wallet-amount" id="topbar-wallet-amount">185,000 دج</span>
+            </button>
+
+            <!-- Notifications Bell -->
+            <button class="icon-circle-btn relative" onclick="window.FarmateApp.openDrawer('notifications-drawer')" aria-label="الإشعارات">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+              <span class="badge-dot" id="notif-badge">3</span>
+            </button>
+
+            <!-- Cart Trigger (shows badge count) -->
+            <button class="icon-circle-btn relative" id="topbar-cart-btn" onclick="window.FarmateApp.openDrawer('cart-drawer')" aria-label="سلة المشتريات">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="8" cy="21" r="1"/><circle cx="19" cy="21" r="1"/><path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"/></svg>
+              <span class="badge-count" id="cart-badge-count">2</span>
+            </button>
+          </div>
+        </header>
+
+        <!-- Offline Cached Mode Banner -->
+        <div id="offline-cached-banner" class="offline-cached-banner hidden">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12.55a11 11 0 0 1 14.08 0M1.42 9a16 16 0 0 1 21.16 0M8.53 16.11a6 6 0 0 1 6.95 0M12 20h.01"/><line x1="2" y1="2" x2="22" y2="22" stroke="#EF4444" stroke-width="2"/></svg>
+          <span>أنت تعمل في <strong>وضع عدم الاتصال</strong> (يتم عرض البيانات المحفوظة محلياً)</span>
+        </div>
+
+        <!-- Dynamic Content Body (Scrollable Container for Tab Pages) -->
+        <div class="app-scrollable-content" id="app-content-scroll">
+          
+          <!-- ================================================================= -->
+          <!-- TAB 1: المستشار الذكي (AI ADVISOR - DEFAULT HOME) -->
+          <!-- ================================================================= -->
+          <section id="tab-advisor" class="tab-page active-tab">
+            <div class="advisor-container">
+              
+              <!-- Advisor Header Bar -->
+              <div class="advisor-subnav">
+                <div class="advisor-bot-info">
+                  <div class="bot-badge-icon">
+                    <span class="pulse-ring"></span>
+                    🤖
+                  </div>
+                  <div>
+                    <h2 class="advisor-title">المستشار الفلاحي الذكي</h2>
+                    <span class="advisor-status-text">متصل • يفهم اللهجة الجزائرية والزراعة المحلية</span>
+                  </div>
+                </div>
+                
+                <div class="advisor-actions">
+                  <button class="btn-sm-ghost" onclick="window.FarmateApp.openDrawer('advisor-history-drawer')" title="سجل المحادثات">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 14 14"/></svg>
+                    <span>السجل</span>
+                  </button>
+                  <button class="btn-sm-ghost" onclick="window.FarmateApp.resetAdvisorChat()" title="محادثة جديدة">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>
+                    <span>جديدة</span>
+                  </button>
+                </div>
+              </div>
+
+              <!-- Quick Disease Scanner Banner -->
+              <div class="scanner-hero-card" onclick="window.FarmateApp.openDiseaseDetectionModal()">
+                <div class="scanner-hero-content">
+                  <div class="scanner-icon-wrap">
+                    <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#10B981" stroke-width="2"><path d="M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2Zm0 18a8 8 0 1 1 8-8 8 8 0 0 1-8 8Z"/><path d="M12 6v6l4 2"/><path d="M7 17l10-10"/></svg>
+                  </div>
+                  <div class="scanner-hero-text">
+                    <strong>تشخيص أمراض النبات بالذكاء الاصطناعي 📸</strong>
+                    <span>صوّر أي نبتة أو ورقة مصابة واحصل على تشخيص فوري وعلاج من المتجر</span>
+                  </div>
+                </div>
+                <button class="btn-scanner-cta">فحص الآن</button>
+              </div>
+
+              <!-- Chat Message Feed -->
+              <div class="chat-messages-container" id="chat-messages-box">
+                <!-- Initial Welcome Message from Bot -->
+                <div class="chat-msg bot-msg animate-fade-in">
+                  <div class="msg-bot-avatar">🤖</div>
+                  <div class="msg-bubble">
+                    <div class="msg-header">
+                      <span class="bot-name-label">فارميت الذكي</span>
+                      <span class="msg-time">الآن</span>
+                    </div>
+                    <div class="msg-body">
+                      <p>مرحباً بك <strong>عمي رابح</strong>! واش راه المحصول اليوم؟ 🌱</p>
+                      <p>أنا هنا باش نعاونك في كامل الأمور الفلاحية: تشخيص الأمراض، مواعيد السقي والتسميد، حالة الطقس في سطيف، أو أسعار السوق.</p>
+                      <p class="msg-note">💡 يمكنك الكتابة باللغة العربية أو الدارجة الجزائرية، أو إرسال صورة للنبتة للفحص المباشر.</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Prompt Suggestions Chips -->
+              <div class="prompt-chips-wrapper">
+                <span class="chips-label">جرّب أن تسأل:</span>
+                <div class="chips-scroll" id="prompt-chips-container">
+                  <button class="prompt-chip" onclick="window.FarmateApp.sendQuickPrompt('كيفاش نداوي اللفحة المتأخرة (Mildiou) في الطماطم؟')">
+                    🍅 علاج لفحة الطماطم
+                  </button>
+                  <button class="prompt-chip" onclick="window.FarmateApp.sendQuickPrompt('برنامج التسميد الأزوتي للقمح الصلب في سطيف')">
+                    🌾 تسميد القمح الصلب
+                  </button>
+                  <button class="prompt-chip" onclick="window.FarmateApp.sendQuickPrompt('كيفاش نستفاد من قرض الرفيق بدون فوائد؟')">
+                    💰 الاستفادة من قرض الرفيق
+                  </button>
+                  <button class="prompt-chip" onclick="window.FarmateApp.sendQuickPrompt('أفضل وقت لسقي أشجار الزيتون خلال الصيف؟')">
+                    🫒 سقي الزيتون
+                  </button>
+                </div>
+              </div>
+
+              <!-- Chat Input Bar -->
+              <div class="chat-input-bar">
+                <!-- Image Attachment Button -->
+                <button type="button" class="btn-chat-tool" onclick="window.FarmateApp.openDiseaseDetectionModal()" title="إرفاق صورة نبتة للتشخيص" aria-label="تحليل صورة نبتة">
+                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+                </button>
+
+                <!-- Voice Recording Simulation Button -->
+                <button type="button" class="btn-chat-tool" id="btn-voice-record" onclick="window.FarmateApp.toggleVoiceInput()" title="تسجيل صوتي بالدارجة" aria-label="تسجيل صوتي">
+                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg>
+                </button>
+
+                <!-- Textarea / Input -->
+                <div class="chat-input-field-wrap">
+                  <input type="text" id="chat-user-input" class="chat-input" placeholder="اسأل فارميت أي شيء (عربية أو دارجة)..." onkeydown="if(event.key==='Enter') window.FarmateApp.handleUserSendMessage()">
+                </div>
+
+                <!-- Send Action (Neon Green) -->
+                <button type="button" class="btn-chat-send" id="btn-chat-send" onclick="window.FarmateApp.handleUserSendMessage()" title="إرسال" aria-label="إرسال">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+                </button>
+              </div>
+
+            </div>
+          </section>
+
+          <!-- ================================================================= -->
+          <!-- TAB 2: المتجر الفلاحي (AGRI-STORE) -->
+          <!-- ================================================================= -->
+          <section id="tab-store" class="tab-page">
+            <div class="store-container">
+              
+              <!-- Store Search & Filter Header -->
+              <div class="store-search-section">
+                <div class="search-bar-wrap">
+                  <svg class="search-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                  <input type="text" id="store-search-input" class="store-search-input" placeholder="ابحث عن بذور، أسمدة، مبيدات، عتاد..." oninput="window.FarmateApp.filterStoreProducts()">
+                </div>
+                <button class="btn-filter-trigger" onclick="window.FarmateApp.openDrawer('store-filter-drawer')" aria-label="تصفية المنتجات">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/></svg>
+                </button>
+              </div>
+
+              <!-- Loyalty / Free Delivery Tracker Banner -->
+              <div class="loyalty-banner glass-panel">
+                <div class="loyalty-info">
+                  <div class="loyalty-badge">🚚 توصيل مجاني</div>
+                  <span class="loyalty-desc">أضف <strong>2,500 دج</strong> للحصول على توصيل مجاني لولايتك</span>
+                </div>
+                <div class="loyalty-progress-bar">
+                  <div class="loyalty-fill" style="width: 65%;"></div>
+                </div>
+              </div>
+
+              <!-- Store Category Pills -->
+              <div class="category-pills-scroll" id="store-categories-list">
+                <!-- Rendered dynamically -->
+              </div>
+
+              <!-- Active Filter Chips (if any) -->
+              <div class="active-filter-chips hidden" id="active-filters-bar">
+                <span class="active-filter-tag">السعر: الكل <button onclick="window.FarmateApp.clearFilters()">×</button></span>
+              </div>
+
+              <!-- Product Grid -->
+              <div class="products-grid" id="products-grid-container">
+                <!-- Products rendered via JS -->
+              </div>
+
+              <!-- Store Pagination Controls -->
+              <div class="pagination-wrap" id="store-pagination-container">
+                <!-- Dynamic Pagination -->
+              </div>
+
+            </div>
+          </section>
+
+          <!-- ================================================================= -->
+          <!-- TAB 3: الآلات والنقل (MACHINERY & LOGISTICS CONNECT) -->
+          <!-- ================================================================= -->
+          <section id="tab-machinery" class="tab-page">
+            <div class="machinery-container">
+              
+              <!-- Machinery View Switcher & Search -->
+              <div class="machinery-top-tools">
+                <div class="machinery-search-bar">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                  <input type="text" id="machinery-search-input" placeholder="ابحث عن جرار، حصادة، شاحنة تبريد..." oninput="window.FarmateApp.filterMachinery()">
+                </div>
+                <div class="wilaya-select-wrap">
+                  <select id="machinery-wilaya-select" onchange="window.FarmateApp.filterMachinery()">
+                    <option value="all">كل الولايات</option>
+                    <option value="setif" selected>سطيف (عين ولمان)</option>
+                    <option value="mascara">معسكر</option>
+                    <option value="biskra">بسكرة</option>
+                    <option value="tlemcen">تلمسان</option>
+                    <option value="guelma">قالمة</option>
+                  </select>
+                </div>
+              </div>
+
+              <!-- Interactive Simulated Geo-Map -->
+              <div class="map-simulation-card">
+                <div class="map-backdrop">
+                  <!-- GIS Vector Roads & Parcel Grid -->
+                  <svg class="map-grid-svg" viewBox="0 0 400 170" preserveAspectRatio="none">
+                    <defs>
+                      <pattern id="parcelPattern" width="40" height="40" patternUnits="userSpaceOnUse">
+                        <path d="M 40 0 L 0 0 0 40" fill="none" stroke="rgba(124, 58, 237, 0.12)" stroke-width="1"/>
+                      </pattern>
+                    </defs>
+                    <rect width="100%" height="100%" fill="url(#parcelPattern)"/>
+                    <path d="M0 45 Q120 90 220 35 T400 95" stroke="#C4B5FD" stroke-width="4" fill="none" opacity="0.8"/>
+                    <path d="M60 0 Q90 110 160 170" stroke="#DDD6FE" stroke-width="3" fill="none" opacity="0.7"/>
+                    <path d="M240 0 Q270 120 380 170" stroke="#C4B5FD" stroke-width="3" fill="none" opacity="0.7"/>
+                    <circle cx="130" cy="70" r="35" fill="rgba(139, 92, 246, 0.1)"/>
+                    <circle cx="290" cy="95" r="48" fill="rgba(34, 197, 94, 0.08)"/>
+                  </svg>
+                  
+                  <div class="map-gps-live-badge">
+                    <span class="live-dot-pulse"></span>
+                    <span>📡 تتبع مباشر GPS: سطيف وعين ولمان</span>
+                  </div>
+
+                  <!-- Professional Machine Map Pins -->
+                  <div class="map-pin pin-1" onclick="window.FarmateApp.openMachineDetails('m1')" title="جرار ماسي فيرغسون 140 حصان">
+                    <div class="pin-card-pill">
+                      <span class="pin-icon">🚜</span>
+                      <div class="pin-text-wrap">
+                        <span class="pin-title">جرار 140 حصان</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="map-pin pin-2" onclick="window.FarmateApp.openMachineDetails('m2')" title="حصادة قمح كلاوس 2022">
+                    <div class="pin-card-pill">
+                      <span class="pin-icon">🌾</span>
+                      <div class="pin-text-wrap">
+                        <span class="pin-title">حصادة كلاوس</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="map-pin pin-3" onclick="window.FarmateApp.openMachineDetails('m3')" title="شاحنة نقل محاصيل 10 طن">
+                    <div class="pin-card-pill">
+                      <span class="pin-icon">🚛</span>
+                      <div class="pin-text-wrap">
+                        <span class="pin-title">شاحنة 10 طن</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="map-pin pin-4" onclick="window.FarmateApp.openMachineDetails('m4')" title="صهريج سقي وتسميد 5000 لتر">
+                    <div class="pin-card-pill">
+                      <span class="pin-icon">💧</span>
+                      <div class="pin-text-wrap">
+                        <span class="pin-title">صهريج 5000 لتر</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="map-overlay-info">
+                  <span>📍 تم العثور على <strong>14 عتاد وشاحنة متوفرة</strong> قرب موقعك الحالي (سطيف)</span>
+                </div>
+              </div>
+
+              <!-- Machinery Categories Pills -->
+              <div class="machinery-categories-pills" id="machinery-categories-bar">
+                <button class="pill-chip active" data-cat="all" onclick="window.FarmateApp.setMachineryCategory('all', this)">الكل (14)</button>
+                <button class="pill-chip" data-cat="tractors" onclick="window.FarmateApp.setMachineryCategory('tractors', this)">🚜 جرارات وحرث</button>
+                <button class="pill-chip" data-cat="harvesters" onclick="window.FarmateApp.setMachineryCategory('harvesters', this)">🌾 حصادات ودراس</button>
+                <button class="pill-chip" data-cat="logistics" onclick="window.FarmateApp.setMachineryCategory('logistics', this)">🚛 نقل وشاحنات</button>
+                <button class="pill-chip" data-cat="irrigation" onclick="window.FarmateApp.setMachineryCategory('irrigation', this)">💧 صهاريج ومضخات</button>
+              </div>
+
+              <!-- Machinery Listing Cards -->
+              <div class="machinery-cards-list" id="machinery-list-container">
+                <!-- Rendered dynamically via JS -->
+              </div>
+
+              <!-- Machinery Pagination Controls -->
+              <div class="pagination-wrap" id="machinery-pagination-container">
+                <!-- Dynamic Pagination -->
+              </div>
+
+            </div>
+          </section>
+
+          <!-- ================================================================= -->
+          <!-- TAB 4: الطقس والتنبيهات الذكية (WEATHER & AGRO-ALERTS) -->
+          <!-- ================================================================= -->
+          <section id="tab-weather" class="tab-page">
+            <div class="weather-container">
+              
+              <!-- Weather Region Selector -->
+              <div class="weather-location-bar">
+                <div class="loc-pin-wrap">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#6D28D9" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                  <select id="weather-wilaya-select" class="weather-select" onchange="window.FarmateApp.handleWeatherWilayaChange(this.value)">
+                    <option value="setif" selected>سطيف - الهضاب العليا</option>
+                    <option value="biskra">بسكرة - الزيبان</option>
+                    <option value="mascara">معسكر - سهل غريس</option>
+                    <option value="algiers">الجزائر العاصمة - متيجة</option>
+                    <option value="ouargla">ورقلة - الجنوب</option>
+                  </select>
+                </div>
+                <span class="weather-updated-badge">محدّث منذ 10 د</span>
+              </div>
+
+              <!-- Main Weather Hero with Animated Mascot -->
+              <div class="weather-hero-card glass-panel" id="weather-hero-panel">
+                <div class="weather-hero-main">
+                  <div class="weather-temp-wrap">
+                    <span class="weather-current-temp" id="weather-current-temp">24°</span>
+                    <div class="weather-condition-meta">
+                      <strong class="weather-condition-text" id="weather-condition-text">مشمس مع غيوم خفيفة</strong>
+                      <span class="weather-range-text">العظمى 28° / الصغرى 14°</span>
+                    </div>
+                  </div>
+                  
+                  <!-- Weather Robot Mascot Reaction -->
+                  <div class="weather-mascot-reaction" id="weather-mascot-box">
+                    <div class="mascot-mini-bot">
+                      <!-- SVG Mascot with Sunhat -->
+                      <svg width="85" height="85" viewBox="0 0 100 100" fill="none">
+                        <!-- Sun Hat -->
+                        <path d="M15 45 C35 25 65 25 85 45 Z" fill="#F59E0B"/>
+                        <ellipse cx="50" cy="46" rx="42" ry="7" fill="#D97706"/>
+                        <!-- Bot Face -->
+                        <rect x="22" y="44" width="56" height="42" rx="16" fill="#FFFFFF" stroke="#DDD6FE" stroke-width="2"/>
+                        <rect x="30" y="52" width="40" height="24" rx="10" fill="#1E1B4B"/>
+                        <circle cx="42" cy="64" r="4.5" fill="#10B981"/>
+                        <circle cx="58" cy="64" r="4.5" fill="#10B981"/>
+                        <path d="M46 70 Q50 73 54 70" stroke="#10B981" stroke-width="1.8" fill="none"/>
+                      </svg>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Agricultural Key Indicators Grid -->
+                <div class="weather-metrics-grid">
+                  <div class="metric-cell">
+                    <span class="metric-icon">💧</span>
+                    <span class="metric-label">رطوبة الجو</span>
+                    <strong class="metric-val" id="weather-val-humidity">42%</strong>
+                  </div>
+                  <div class="metric-cell">
+                    <span class="metric-icon">💨</span>
+                    <span class="metric-label">سرعة الرياح</span>
+                    <strong class="metric-val" id="weather-val-wind">14 كم/سا</strong>
+                  </div>
+                  <div class="metric-cell">
+                    <span class="metric-icon">🌱</span>
+                    <span class="metric-label">رطوبة التربة</span>
+                    <strong class="metric-val" id="weather-val-soil">68% (جيدة)</strong>
+                  </div>
+                  <div class="metric-cell">
+                    <span class="metric-icon">☀️</span>
+                    <span class="metric-label">مؤشر التبخر</span>
+                    <strong class="metric-val" id="weather-val-et">4.2 ملم/يوم</strong>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Dedicated Smart Agro-Alerts Section -->
+              <div class="agro-alerts-section">
+                <div class="section-title-wrap">
+                  <h3 class="section-title">🚨 التنبيهات والتوصيات الفلاحية الذكية</h3>
+                  <span class="badge-alert-count">2 تنبيه نشط</span>
+                </div>
+
+                <div class="alert-cards-stack">
+                  <!-- Alert 1: Frost warning -->
+                  <div class="agro-alert-card warning-level-amber">
+                    <div class="alert-card-header">
+                      <span class="alert-icon">❄️</span>
+                      <div class="alert-title-meta">
+                        <strong>احتمال صقيع ربيعي ليل الخميس القادم</strong>
+                        <span class="alert-time-tag">درجة الحرارة قد تنخفض إلى 2° مئوية</span>
+                      </div>
+                    </div>
+                    <div class="alert-card-body">
+                      <p><strong>توصية فارميت:</strong> ينصح بتشغيل السقي بالرذاذ الخفيف فجراً للبيوت البلاستيكية، وتجنب التسميد الأزوتي الكثيف قبل ليلة الصقيع.</p>
+                      <div class="alert-actions-row">
+                        <button class="btn-xs-alert" onclick="window.FarmateApp.askAdvisorFromAlert('كيفاش نحمي محاصيل الطماطم من الصقيع الربيعي المرتقب؟')">
+                          💬 استشر المساعد حول هذا الخطر
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Alert 2: Spraying window -->
+                  <div class="agro-alert-card warning-level-green">
+                    <div class="alert-card-header">
+                      <span class="alert-icon">✅</span>
+                      <div class="alert-title-meta">
+                        <strong>نافذة مثالية لرش المبيدات الفطرية</strong>
+                        <span class="alert-time-tag">الرياح هادئة أقل من 8 كم/سا والرطوبة ملائمة</span>
+                      </div>
+                    </div>
+                    <div class="alert-card-body">
+                      <p>الوقت الأنسب لرش العلاجات الوقائية هو صباح اليوم بين الساعة 06:00 و 09:30 صباحاً.</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Hourly Forecast Horizontal Scroll -->
+              <div class="forecast-section">
+                <h4 class="sub-section-title">توقعات الساعات القادمة</h4>
+                <div class="hourly-forecast-scroll" id="hourly-forecast-row">
+                  <!-- Dynamically rendered -->
+                </div>
+              </div>
+
+              <!-- 5-Day Extended Agro-Forecast -->
+              <div class="forecast-section">
+                <h4 class="sub-section-title">توقعات 5 أيام مع مؤشرات الفلاحة</h4>
+                <div class="daily-forecast-card glass-panel" id="daily-forecast-list">
+                  <!-- Dynamically rendered -->
+                </div>
+              </div>
+
+            </div>
+          </section>
+
+          <!-- ================================================================= -->
+          <!-- TAB 5: التمويل والدعم الفلاحي (AGRO-FUNDING & GRANTS) -->
+          <!-- ================================================================= -->
+          <section id="tab-funding" class="tab-page">
+            <div class="funding-container">
+              
+              <!-- Funding Hero Banner -->
+              <div class="funding-hero-banner glass-panel">
+                <div class="funding-hero-text">
+                  <h2>بوابة التمويل والدعم الفلاحي 💰</h2>
+                  <p>قروض بدون فوائد، دعم الدولة للعتاد، ومنح الاستثمار الزراعي مع مرافقة رقمية كاملة من فارميت.</p>
+                </div>
+                <div class="funding-stats-bar">
+                  <div class="stat-pill">
+                    <strong>0%</strong>
+                    <span>فوائد قرض الرفيق</span>
+                  </div>
+                  <div class="stat-pill">
+                    <strong>حتى 60%</strong>
+                    <span>دعم عتاد السقي</span>
+                  </div>
+                  <div class="stat-pill">
+                    <strong>48 ساعة</strong>
+                    <span>دراسة الملف الأولية</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Active Application Live Tracker Component -->
+              <div class="active-application-card glass-panel">
+                <div class="app-tracker-header">
+                  <div>
+                    <span class="tracker-tag">طلبك الحالي النشط</span>
+                    <h4 class="tracker-title">تمويل بذور وأسمدة - قرض الرفيق 2026</h4>
+                  </div>
+                  <span class="status-badge badge-pending">قيد الدراسة والتدقيق</span>
+                </div>
+
+                <!-- Step Progress Bar -->
+                <div class="tracking-steps-horizontal">
+                  <div class="step-node completed">
+                    <div class="node-circle">✓</div>
+                    <span class="node-label">إيداع الملف</span>
+                  </div>
+                  <div class="step-connector active-pulse"></div>
+                  <div class="step-node active">
+                    <div class="node-circle">2</div>
+                    <span class="node-label">دراسة البنك BADR</span>
+                  </div>
+                  <div class="step-connector"></div>
+                  <div class="step-node">
+                    <div class="node-circle">3</div>
+                    <span class="node-label">الموافقة والصرف</span>
+                  </div>
+                </div>
+
+                <div class="tracker-footer-meta">
+                  <span>المبلغ المطلوب: <strong>1,200,000 دج</strong></span>
+                  <button class="btn-link" onclick="window.FarmateApp.showApplicationDetailsModal()">تفاصيل الملف ↗</button>
+                </div>
+              </div>
+
+              <!-- Funding Programs Tabs / Filter -->
+              <div class="funding-filter-bar">
+                <button class="pill-chip active" onclick="window.FarmateApp.filterFunding('all', this)">كل البرامج (5)</button>
+                <button class="pill-chip" onclick="window.FarmateApp.filterFunding('loans', this)">قروض موسمية</button>
+                <button class="pill-chip" onclick="window.FarmateApp.filterFunding('subsidies', this)">دعم العتاد والسقي</button>
+                <button class="pill-chip" onclick="window.FarmateApp.filterFunding('youth', this)">مشاريع الشباب</button>
+              </div>
+
+              <!-- Funding Programs Cards List -->
+              <div class="funding-cards-list" id="funding-cards-container">
+                <!-- Rendered dynamically via JS -->
+              </div>
+
+            </div>
+          </section>
+
+        </div>
+
+        <!-- ========================================================================= -->
+        <!-- FIXED 5-ITEM BOTTOM NAVIGATION BAR -->
+        <!-- ========================================================================= -->
+        <nav class="bottom-nav-bar" aria-label="التنقل الرئيسي">
+          
+          <!-- Item 1: المستشار الذكي (Default) -->
+          <button class="nav-item active" data-tab="tab-advisor" onclick="window.FarmateApp.switchTab('tab-advisor', this)">
+            <div class="nav-icon-wrap">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2a8 8 0 0 0-8 8c0 3.37 2.09 6.25 5.06 7.43L9 22l4-2 4 2-.06-4.57C19.91 16.25 22 13.37 22 10a8 8 0 0 0-8-8z"/><circle cx="9" cy="9" r="1"/><circle cx="15" cy="9" r="1"/></svg>
+            </div>
+            <span class="nav-label">المستشار</span>
+          </button>
+
+          <!-- Item 2: المتجر -->
+          <button class="nav-item" data-tab="tab-store" onclick="window.FarmateApp.switchTab('tab-store', this)">
+            <div class="nav-icon-wrap">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
+            </div>
+            <span class="nav-label">المتجر</span>
+          </button>
+
+          <!-- Item 3: الآلات والنقل -->
+          <button class="nav-item" data-tab="tab-machinery" onclick="window.FarmateApp.switchTab('tab-machinery', this)">
+            <div class="nav-icon-wrap">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="3" width="15" height="13" rx="2"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
+            </div>
+            <span class="nav-label">الآلات والنقل</span>
+          </button>
+
+          <!-- Item 4: الطقس -->
+          <button class="nav-item" data-tab="tab-weather" onclick="window.FarmateApp.switchTab('tab-weather', this)">
+            <div class="nav-icon-wrap">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17.5 19H9a7 7 0 1 1 6.71-9h1.79a4.5 4.5 0 1 1 0 9Z"/></svg>
+            </div>
+            <span class="nav-label">الطقس</span>
+          </button>
+
+          <!-- Item 5: التمويل -->
+          <button class="nav-item" data-tab="tab-funding" onclick="window.FarmateApp.switchTab('tab-funding', this)">
+            <div class="nav-icon-wrap">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+            </div>
+            <span class="nav-label">التمويل</span>
+          </button>
+
+        </nav>
+
+      </div>
+
+      <!-- ========================================================================= -->
+      <!-- MODALS & DRAWERS (SLIDE-IN SHEETS) -->
+      <!-- ========================================================================= -->
+      
+      <!-- Backdrop Overlay -->
+      <div id="drawer-backdrop" class="drawer-backdrop" onclick="window.FarmateApp.closeAllDrawers()"></div>
+
+      <!-- DRAWER 1: USER PROFILE & SETTINGS -->
+      <aside id="profile-drawer" class="slide-drawer drawer-right">
+        <div class="drawer-header">
+          <h3>الملف الشخصي والإعدادات</h3>
+          <button class="btn-close-drawer" onclick="window.FarmateApp.closeDrawer('profile-drawer')">✕</button>
+        </div>
+        <div class="drawer-content">
+          <!-- Profile Hero Card (Clickable to Edit Account) -->
+          <div class="profile-hero-card" onclick="window.FarmateApp.openAccountModal()" style="cursor: pointer;" title="انقر لتعديل بيانات الحساب">
+            <div class="profile-avatar-wrap">
+              <img id="drawer-avatar-img" src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&auto=format&fit=crop&q=80" alt="عمي رابح" class="profile-big-avatar">
+              <span class="verified-badge" title="فلاح معتمد لدى الغرفة الفلاحية">✓</span>
+            </div>
+            <div class="profile-names">
+              <h4 id="drawer-profile-name">رابح منصوري (عمي رابح)</h4>
+              <span class="profile-sub" id="drawer-profile-sub">مزارع معتمد • بطاقة فلاح رقم 19/8402</span>
+              <span class="profile-loc" id="drawer-profile-loc">📍 بلدية عين ولمان، ولاية سطيف</span>
+              <span class="edit-profile-badge">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"/></svg>
+                تعديل الملف الشخصي
+              </span>
+            </div>
+          </div>
+
+          <!-- Wallet Quick Overview -->
+          <div class="drawer-wallet-box glass-panel">
+            <div class="wallet-stat-row">
+              <div>
+                <span class="stat-title">رصيد المحفظة الإجمالي</span>
+                <h3 class="stat-big-val" id="drawer-wallet-total">185,000 دج</h3>
+              </div>
+              <button class="btn-primary-neon btn-sm" onclick="window.FarmateApp.openWithdrawModal()">سحب CCP</button>
+            </div>
+            <div class="wallet-sub-breakdown">
+              <span>قابل للسحب: <strong id="drawer-wallet-withdrawable">143,000 دج</strong></span>
+              <span>معلق (مبيعات): <strong id="drawer-wallet-pending">42,000 دج</strong></span>
+            </div>
+          </div>
+
+          <!-- Profile Actions Navigation -->
+          <div class="drawer-menu-list">
+            <button class="drawer-menu-item" onclick="window.FarmateApp.openAccountModal()">
+              <span class="menu-item-icon svg-icon">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+              </span>
+              <div class="menu-item-text">
+                <strong>حسابي وبياناتي الشخصية</strong>
+                <span>تعديل الاسم، المزرعة، الولاية ورقم الهاتف</span>
+              </div>
+              <span class="menu-arrow">‹</span>
+            </button>
+
+            <button class="drawer-menu-item" onclick="window.FarmateApp.openOrdersTrackerModal()">
+              <span class="menu-item-icon svg-icon">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"/><path d="m3.3 7 8.7 5 8.7-5"/><path d="M12 22V12"/></svg>
+              </span>
+              <div class="menu-item-text">
+                <strong>طلباتي ومشترياتي</strong>
+                <span>تتبع الشحنات المباشرة (1 في الطريق)</span>
+              </div>
+              <span class="menu-arrow">‹</span>
+            </button>
+
+            <button class="drawer-menu-item" onclick="window.FarmateApp.openMyListingsModal()">
+              <span class="menu-item-icon svg-icon">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="3" width="15" height="13" rx="2"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
+              </span>
+              <div class="menu-item-text">
+                <strong>عتادي ومنتجاتي المعروضة</strong>
+                <span>إدارة الجرار والمحاصيل المعروضة للإيجار والبيع</span>
+              </div>
+              <span class="menu-arrow">‹</span>
+            </button>
+
+            <button class="drawer-menu-item" onclick="window.FarmateApp.openFavoritesModal()">
+              <span class="menu-item-icon svg-icon">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg>
+              </span>
+              <div class="menu-item-text">
+                <strong>المفضلة وقائمة الرغبات</strong>
+                <span id="drawer-fav-count-text">المنتجات والعتاد المحفوظ</span>
+              </div>
+              <span class="menu-arrow">‹</span>
+            </button>
+          </div>
+
+          <!-- Settings Options -->
+          <div class="drawer-settings-section">
+            <h5 class="settings-group-title">تخصيص التطبيق</h5>
+            
+            <div class="setting-row">
+              <span>الوضع الليلي (Dark Mode)</span>
+              <label class="switch-toggle">
+                <input type="checkbox" id="theme-toggle-check" onchange="window.FarmateApp.toggleTheme()">
+                <span class="switch-slider"></span>
+              </label>
+            </div>
+
+            <div class="setting-row">
+              <span>لغة الواجهة</span>
+              <select class="settings-select" onchange="window.FarmateApp.showToast('تم حفظ تفضيل اللغة العربية', 'success')">
+                <option value="ar" selected>العربية (الافتراضية)</option>
+                <option value="fr">Français</option>
+                <option value="tz">Tamazight</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="drawer-footer-actions">
+            <button class="btn-logout" onclick="window.FarmateApp.handleLogout()">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+              <span>تسجيل الخروج من الحساب</span>
+            </button>
+          </div>
+        </div>
+      </aside>
+
+      <!-- DRAWER 2: SHOPPING CART & CHECKOUT -->
+      <aside id="cart-drawer" class="slide-drawer drawer-left">
+        <div class="drawer-header">
+          <div class="drawer-title-group">
+            <h3>سلة المشتريات الفلاحية</h3>
+            <button class="btn-clear-cart-text" onclick="window.FarmateApp.clearCart()" title="إفراغ كامل السلة">إفراغ السلة</button>
+          </div>
+          <button class="btn-close-drawer" onclick="window.FarmateApp.closeDrawer('cart-drawer')">✕</button>
+        </div>
+        <div class="drawer-content flex-column">
+          <!-- Cart Items Container -->
+          <div class="cart-items-scroll" id="cart-items-list">
+            <!-- Dynamically populated -->
+          </div>
+
+          <!-- Cart Summary & Checkout -->
+          <div class="cart-summary-footer glass-panel">
+            <!-- Promo Code Row -->
+            <div class="promo-code-box">
+              <input type="text" id="cart-promo-input" placeholder="رمز القسيمة (مثال: FARMATE2026)">
+              <button type="button" class="btn-apply-promo" onclick="window.FarmateApp.applyCoupon()">تطبيق</button>
+            </div>
+
+            <!-- Price Breakdown -->
+            <div class="summary-line">
+              <span>المجموع الفرعي:</span>
+              <strong id="cart-subtotal-val">0 دج</strong>
+            </div>
+            <div class="summary-line">
+              <span>تكلفة التوصيل (توصيل فلاحي مؤمن):</span>
+              <strong id="cart-delivery-val">800 دج</strong>
+            </div>
+            <div class="summary-line total-line">
+              <span>الإجمالي الكلي:</span>
+              <strong class="total-highlight" id="cart-total-val">0 دج</strong>
+            </div>
+
+            <button class="btn-primary-neon btn-lg w-full mt-2" onclick="window.FarmateApp.openCheckoutModal()">
+              <span>متابعة إتمام الطلب (الدفع عند الاستلام)</span>
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
+            </button>
+          </div>
+        </div>
+      </aside>
+
+      <!-- DRAWER 3: NOTIFICATIONS DRAWER -->
+      <aside id="notifications-drawer" class="slide-drawer drawer-right">
+        <div class="drawer-header">
+          <h3>التنبيهات والإشعارات</h3>
+          <button class="btn-close-drawer" onclick="window.FarmateApp.closeDrawer('notifications-drawer')">✕</button>
+        </div>
+        <div class="drawer-content">
+          <div class="notif-list" id="notifications-list-container">
+            <!-- Rendered dynamically -->
+          </div>
+        </div>
+      </aside>
+
+      <!-- DRAWER 4: ADVISOR HISTORY -->
+      <aside id="advisor-history-drawer" class="slide-drawer drawer-right">
+        <div class="drawer-header">
+          <h3>سجل الاستشارات السابقة</h3>
+          <button class="btn-close-drawer" onclick="window.FarmateApp.closeDrawer('advisor-history-drawer')">✕</button>
+        </div>
+        <div class="drawer-content">
+          <div class="history-list" id="advisor-history-list">
+            <!-- Dynamically filled -->
+          </div>
+        </div>
+      </aside>
+
+      <!-- DRAWER 5: STORE FILTER BOTTOM SHEET -->
+      <div id="store-filter-drawer" class="slide-bottom-sheet">
+        <div class="sheet-header">
+          <h3>تصفية وفرز المنتجات</h3>
+          <button class="btn-close-drawer" onclick="window.FarmateApp.closeDrawer('store-filter-drawer')">✕</button>
+        </div>
+        <div class="sheet-content">
+          <div class="filter-group">
+            <label class="filter-label">نطاق السعر الأقصى: <span id="price-range-display">15,000 دج</span></label>
+            <input type="range" min="1000" max="30000" step="500" value="15000" class="range-slider" id="price-slider" oninput="document.getElementById('price-range-display').innerText = parseInt(this.value).toLocaleString() + ' دج'">
+          </div>
+          <div class="filter-group">
+            <label class="filter-label">الولاية والتوافر</label>
+            <select class="settings-select" id="filter-wilaya-select">
+              <option value="all">كل الولايات (توصيل لكامل القطر)</option>
+              <option value="setif">سطيف والمناطق المجاورة</option>
+              <option value="algiers">الجزائر والوسط</option>
+              <option value="west">الغرب (معسكر، وهران، تلمسان)</option>
+            </select>
+          </div>
+          <div class="filter-group">
+            <label class="filter-label">التقييم الأدنى</label>
+            <div class="rating-filter-chips">
+              <button class="pill-chip active" onclick="this.classList.toggle('active')">★ 4 نجوم فما فوق</button>
+              <button class="pill-chip" onclick="this.classList.toggle('active')">منتجات معتمدة فقط</button>
+            </div>
+          </div>
+          <div class="sheet-actions">
+            <button class="btn-primary-neon w-full" onclick="window.FarmateApp.applyStoreFilters()">تطبيق الفلاتر</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- ========================================================================= -->
+      <!-- INTERACTIVE MODALS -->
+      <!-- ========================================================================= -->
+
+      <!-- MODAL: PLANT DISEASE DETECTION (AI VISION SCANNER) -->
+      <div id="modal-disease-scan" class="app-modal">
+        <div class="modal-card modal-lg glass-panel">
+          <div class="modal-header">
+            <div class="modal-title-with-icon">
+              <span class="modal-icon">🔬</span>
+              <div>
+                <h3>تحليل وفحص أمراض النبات بالذكاء الاصطناعي</h3>
+                <span class="modal-sub">اختر عينة مصابة أو ارفع صورة لمحصولك</span>
+              </div>
+            </div>
+            <button class="btn-close-modal" onclick="window.FarmateApp.closeModal('modal-disease-scan')">✕</button>
+          </div>
+
+          <div class="modal-body">
+            <!-- Sample Selector Grid -->
+            <div class="scan-samples-picker">
+              <span class="samples-title">اختر من العينات الجاهزة للاختبار الفوري:</span>
+              <div class="samples-grid">
+                <div class="sample-item active" onclick="window.FarmateApp.selectDiseaseSample(0, this)">
+                  <img src="https://images.unsplash.com/photo-1592878904946-b3cd8ae243d0?w=200&auto=format&fit=crop&q=80" alt="ورقة طماطم مصابة باللفحة" class="sample-img">
+                  <span>لفحة الطماطم المتأخرة</span>
+                </div>
+                <div class="sample-item" onclick="window.FarmateApp.selectDiseaseSample(1, this)">
+                  <img src="https://images.unsplash.com/photo-1533038590840-1cde6e668a91?w=200&auto=format&fit=crop&q=80" alt="أوراق زيتون مصابة" class="sample-img">
+                  <span>عين الطاووس في الزيتون</span>
+                </div>
+                <div class="sample-item" onclick="window.FarmateApp.selectDiseaseSample(2, this)">
+                  <img src="https://images.unsplash.com/photo-1589134777092-581ecd83056e?w=200&auto=format&fit=crop&q=80" alt="نبات بطاطا مصاب" class="sample-img">
+                  <span>بياض دقيقي في البطاطا</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Upload Zone -->
+            <div class="upload-dropzone" onclick="window.FarmateApp.simulateFileUpload()">
+              <input type="file" id="file-plant-input" style="display:none" accept="image/*" onchange="window.FarmateApp.handleImageUploadPreview(event)">
+              <div class="dropzone-content" id="dropzone-preview-area">
+                <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#8B5CF6" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+                <strong>انقر لاختيار صورة من هاتفك أو التقاطها بالكاميرا</strong>
+                <span>يدعم JPG, PNG بجودة عالية</span>
+              </div>
+            </div>
+
+            <!-- Scan Progress Animation (Hidden by default) -->
+            <div id="scan-loading-indicator" class="scan-loading-indicator hidden">
+              <div class="scan-laser-box">
+                <img id="scan-preview-target" src="https://images.unsplash.com/photo-1592878904946-b3cd8ae243d0?w=400&auto=format&fit=crop&q=80" alt="جاري المسح">
+                <div class="laser-scanner-line"></div>
+              </div>
+              <div class="loading-status-text">
+                <div class="spinner-neon"></div>
+                <span>جاري معالجة الأنسجة ومطابقة الأعراض مع قاعدة بيانات الأمراض الفلاحية الجزائرية...</span>
+              </div>
+            </div>
+
+            <!-- Diagnosis Result Card (Shown after scan) -->
+            <div id="scan-result-card" class="scan-result-card hidden">
+              <!-- Result Content Populated by JS -->
+            </div>
+          </div>
+
+          <div class="modal-footer">
+            <button class="btn-primary-neon w-full" id="btn-run-scan" onclick="window.FarmateApp.runDiseaseAnalysis()">
+              <span>بدء التحليل الفوري بالذكاء الاصطناعي ⚡</span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- MODAL: PRODUCT DETAIL MODAL -->
+      <div id="modal-product-detail" class="app-modal">
+        <div class="modal-card modal-lg glass-panel">
+          <div class="modal-header">
+            <h3 id="detail-prod-title">تفاصيل المنتج</h3>
+            <button class="btn-close-modal" onclick="window.FarmateApp.closeModal('modal-product-detail')">✕</button>
+          </div>
+          <div class="modal-body" id="detail-product-body">
+            <!-- Injected via script.js -->
+          </div>
+        </div>
+      </div>
+
+      <!-- MODAL: MACHINERY DETAIL & DIRECT CALL -->
+      <div id="modal-machinery-detail" class="app-modal">
+        <div class="modal-card modal-lg glass-panel">
+          <div class="modal-header">
+            <h3 id="detail-machine-title">تفاصيل العتاد وصاحب الآلة</h3>
+            <button class="btn-close-modal" onclick="window.FarmateApp.closeModal('modal-machinery-detail')">✕</button>
+          </div>
+          <div class="modal-body" id="detail-machinery-body">
+            <!-- Injected via script.js -->
+          </div>
+        </div>
+      </div>
+
+      <!-- MODAL: CHECKOUT & ORDER CONFIRMATION -->
+      <div id="modal-checkout" class="app-modal">
+        <div class="modal-card modal-lg glass-panel">
+          <div class="modal-header">
+            <h3>تأكيد الطلب الفلاحي 🚚</h3>
+            <button class="btn-close-modal" onclick="window.FarmateApp.closeModal('modal-checkout')">✕</button>
+          </div>
+          <div class="modal-body">
+            <form id="checkout-form" onsubmit="event.preventDefault(); window.FarmateApp.processFinalOrder();">
+              <div class="form-section-title">1. عنوان التوصيل الفلاحي</div>
+              
+              <div class="input-row-2">
+                <div class="input-group">
+                  <label class="input-label">الولاية</label>
+                  <select class="input-field" required>
+                    <option value="19" selected>19 - سطيف</option>
+                    <option value="29">29 - معسكر</option>
+                    <option value="07">07 - بسكرة</option>
+                    <option value="16">16 - الجزائر العاصمة</option>
+                  </select>
+                </div>
+                <div class="input-group">
+                  <label class="input-label">البلدية / المزرعة</label>
+                  <input type="text" class="input-field" value="عين ولمان - مزرعة الأمل" required>
+                </div>
+              </div>
+
+              <div class="input-group">
+                <label class="input-label">رقم الهاتف للتنسيق مع سائق التوصيل</label>
+                <input type="tel" class="input-field" value="05 50 12 34 56" required>
+              </div>
+
+              <div class="form-section-title mt-4">2. طريقة الدفع</div>
+              <div class="payment-method-selector">
+                <label class="payment-method-card active">
+                  <input type="radio" name="pay-method" value="cod" checked onchange="document.querySelectorAll('.payment-method-card').forEach(c => c.classList.remove('active')); this.closest('.payment-method-card').classList.add('active');">
+                  <div class="custom-radio-circle"><span class="radio-dot"></span></div>
+                  <div class="pay-card-content">
+                    <span class="pay-icon">💵</span>
+                    <div>
+                      <strong>الدفع نقداً عند الاستلام (الافتراضي)</strong>
+                      <span>عاين السلعة مع الموزع ثم ادفع بأمان</span>
+                    </div>
+                  </div>
+                </label>
+
+                <label class="payment-method-card">
+                  <input type="radio" name="pay-method" value="cib" onchange="document.querySelectorAll('.payment-method-card').forEach(c => c.classList.remove('active')); this.closest('.payment-method-card').classList.add('active');">
+                  <div class="custom-radio-circle"><span class="radio-dot"></span></div>
+                  <div class="pay-card-content">
+                    <span class="pay-icon">💳</span>
+                    <div>
+                      <strong>البطاقة الذهبية / CIB (دفع إلكتروني فوري)</strong>
+                      <span>دفع آمن ومؤمن عبر شبكة بريد الجزائر والبنوك</span>
+                    </div>
+                  </div>
+                </label>
+              </div>
+
+              <div class="checkout-guarantee-note">
+                🛡️ <strong>ضمان فارميت:</strong> حق إرجاع المنتج واستبداله خلال 48 ساعة من الاستلام في حال عدم مطابقة المعايير.
+              </div>
+
+              <div class="modal-footer mt-4">
+                <button type="submit" class="btn-primary-neon btn-lg w-full">
+                  <span>تأكيد وشحن الطلب الآن</span>
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+
+      <!-- MODAL: FUNDING PROGRAM APPLICATION FORM -->
+      <div id="modal-funding-apply" class="app-modal">
+        <div class="modal-card modal-lg glass-panel">
+          <div class="modal-header">
+            <h3 id="funding-modal-title">تقديم ملف التمويل والدعم</h3>
+            <button class="btn-close-modal" onclick="window.FarmateApp.closeModal('modal-funding-apply')">✕</button>
+          </div>
+          <div class="modal-body" id="funding-modal-body">
+            <!-- Form populated by JS -->
+          </div>
+        </div>
+      </div>
+
+      <!-- MODAL: WALLET & CCP WITHDRAWAL -->
+      <div id="modal-wallet" class="app-modal">
+        <div class="modal-card glass-panel">
+          <div class="modal-header">
+            <h3>محفظة الفلاح المالية 💳</h3>
+            <button class="btn-close-modal" onclick="window.FarmateApp.closeModal('modal-wallet')">✕</button>
+          </div>
+          <div class="modal-body">
+            <div class="wallet-balance-big-card">
+              <span>الرصيد الإجمالي المتاح</span>
+              <h2>185,000 <small>دج</small></h2>
+              <div class="wallet-sub-caps">
+                <span>سحب سريع خلال 24 ساعة عبر بريد الجزائر</span>
+              </div>
+            </div>
+
+            <form onsubmit="event.preventDefault(); window.FarmateApp.processWithdrawal();">
+              <div class="input-group">
+                <label class="input-label">المبلغ المراد سحبه (دج)</label>
+                <input type="number" id="withdraw-amount-input" class="input-field" value="50000" min="1000" max="143000" required>
+              </div>
+
+              <div class="input-group">
+                <label class="input-label">رقم الحساب البريدي الجاري (CCP) مع المفتاح</label>
+                <input type="text" class="input-field" value="0012345678 Clé 45" required>
+              </div>
+
+              <div class="input-group">
+                <label class="input-label">اسم صاحب الحساب (كما في بطاقة الهوية)</label>
+                <input type="text" class="input-field" value="MANSOURI RABAH" required>
+              </div>
+
+              <button type="submit" class="btn-primary-neon btn-lg w-full mt-3">
+                <span>تأكيد طلب السحب الفوري</span>
+              </button>
+            </form>
+          </div>
+        </div>
+      </div>
+
+      <!-- MODAL: ORDER TRACKER DETAILS & ORDERS PAGE -->
+      <div id="modal-orders" class="app-modal">
+        <div class="modal-card modal-lg glass-panel">
+          <div class="modal-header">
+            <div class="modal-title-with-icon">
+              <span class="modal-icon">📦</span>
+              <div>
+                <h3>طلباتي ومشترياتي الفلاحية</h3>
+                <span class="modal-sub">تتبع الشحنات والفواتير الفورية</span>
+              </div>
+            </div>
+            <button class="btn-close-modal" onclick="window.FarmateApp.closeModal('modal-orders')">✕</button>
+          </div>
+          <div class="modal-body" id="orders-tracker-content">
+            <!-- Dynamically rendered -->
+          </div>
+        </div>
+      </div>
+
+      <!-- MODAL: ACCOUNT & PROFILE EDIT -->
+      <div id="modal-account" class="app-modal">
+        <div class="modal-card modal-lg glass-panel">
+          <div class="modal-header">
+            <div class="modal-title-with-icon">
+              <span class="modal-icon">👤</span>
+              <div>
+                <h3>حسابي وتعديل الملف الشخصي</h3>
+                <span class="modal-sub">تحديث بيانات الفلاح والمستثمرة الفلاحية</span>
+              </div>
+            </div>
+            <button class="btn-close-modal" onclick="window.FarmateApp.closeModal('modal-account')">✕</button>
+          </div>
+          <div class="modal-body">
+            <form id="account-edit-form" onsubmit="event.preventDefault(); window.FarmateApp.saveProfileInfo();">
+              <div class="account-avatar-edit-box">
+                <img id="acc-preview-avatar" src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&auto=format&fit=crop&q=80" alt="صورة الفلاح" class="acc-avatar-img">
+                <div class="acc-avatar-controls">
+                  <span class="acc-avatar-title">صورة الحساب الشخصي</span>
+                  <div class="avatar-chips-picker">
+                    <button type="button" class="avatar-chip active" onclick="window.FarmateApp.setProfileAvatar('https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&auto=format&fit=crop&q=80', this)">عمي رابح (الافتراضية)</button>
+                    <button type="button" class="avatar-chip" onclick="window.FarmateApp.setProfileAvatar('https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=150&auto=format&fit=crop&q=80', this)">مزارعة</button>
+                    <button type="button" class="avatar-chip" onclick="window.FarmateApp.setProfileAvatar('https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=150&auto=format&fit=crop&q=80', this)">شاب فلاح</button>
+                  </div>
+                </div>
+              </div>
+
+              <div class="input-row-2 mt-3">
+                <div class="input-group">
+                  <label class="input-label">الاسم واللقب</label>
+                  <input type="text" id="acc-input-name" class="input-field" value="رابح منصوري (عمي رابح)" required>
+                </div>
+                <div class="input-group">
+                  <label class="input-label">رقم الهاتف</label>
+                  <input type="tel" id="acc-input-phone" class="input-field" value="05 50 12 34 56" required>
+                </div>
+              </div>
+
+              <div class="input-row-2">
+                <div class="input-group">
+                  <label class="input-label">اسم المستثمرة / المزرعة</label>
+                  <input type="text" id="acc-input-farm" class="input-field" value="مزرعة الأمل النموذجية" required>
+                </div>
+                <div class="input-group">
+                  <label class="input-label">رقم بطاقة الفلاح المعتمد</label>
+                  <input type="text" id="acc-input-card" class="input-field" value="19/8402" required>
+                </div>
+              </div>
+
+              <div class="input-row-2">
+                <div class="input-group">
+                  <label class="input-label">الولاية</label>
+                  <select id="acc-input-wilaya" class="input-field">
+                    <option value="سطيف" selected>19 - سطيف</option>
+                    <option value="معسكر">29 - معسكر</option>
+                    <option value="بسكرة">07 - بسكرة</option>
+                    <option value="الجزائر">16 - الجزائر العاصمة</option>
+                    <option value="قالمة">24 - قالمة</option>
+                  </select>
+                </div>
+                <div class="input-group">
+                  <label class="input-label">البلدية</label>
+                  <input type="text" id="acc-input-commune" class="input-field" value="عين ولمان" required>
+                </div>
+              </div>
+
+              <div class="input-group">
+                <label class="input-label">نوع النشاط الزراعي الرئيسي</label>
+                <input type="text" id="acc-input-activity" class="input-field" value="زراعة الحبوب، البطاطا، وتربية الماشية" required>
+              </div>
+
+              <div class="input-group">
+                <label class="input-label">نبذة عن النشاط والخبرة</label>
+                <textarea id="acc-input-bio" class="input-field" rows="2" style="resize:none;">فلاح معتمد لدى الغرفة الفلاحية لولاية سطيف منذ 2012، متخصص في زراعة القمح الصلب والبطاطا ونظم السقي الحديثة.</textarea>
+              </div>
+
+              <div class="modal-footer mt-3">
+                <button type="submit" class="btn-primary-neon btn-lg w-full">
+                  <span>حفظ التعديلات وتحديث الملف 💾</span>
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+
+      <!-- MODAL: WISHLIST / FAVORITES -->
+      <div id="modal-wishlist" class="app-modal">
+        <div class="modal-card modal-lg glass-panel">
+          <div class="modal-header">
+            <div class="modal-title-with-icon">
+              <span class="modal-icon">❤️</span>
+              <div>
+                <h3>قائمة المفضلة والرغبات</h3>
+                <span class="modal-sub" id="wishlist-subtitle">المنتجات والعتاد المحفوظ</span>
+              </div>
+            </div>
+            <button class="btn-close-modal" onclick="window.FarmateApp.closeModal('modal-wishlist')">✕</button>
+          </div>
+          <div class="modal-body" id="wishlist-modal-body">
+            <!-- Dynamically populated -->
+          </div>
+        </div>
+      </div>
+
+      <!-- MODAL: MY LISTINGS (PRODUCTS & MACHINERY) -->
+      <div id="modal-my-listings" class="app-modal">
+        <div class="modal-card modal-lg glass-panel">
+          <div class="modal-header">
+            <div class="modal-title-with-icon">
+              <span class="modal-icon">🚜</span>
+              <div>
+                <h3>منتجاتي وعتادي المعروض</h3>
+                <span class="modal-sub">إدارة عروض الإيجار والبيع الخاصة بك</span>
+              </div>
+            </div>
+            <button class="btn-close-modal" onclick="window.FarmateApp.closeModal('modal-my-listings')">✕</button>
+          </div>
+          <div class="modal-body">
+            <div class="listings-top-bar">
+              <span class="listings-count-badge" id="my-listings-count-badge">3 عروض نشطة</span>
+              <button class="btn-primary-neon btn-sm" onclick="window.FarmateApp.openAddListingModal()">
+                <span>+ إضافة إعلان جديد</span>
+              </button>
+            </div>
+            <div class="my-listings-list" id="my-listings-container">
+              <!-- Dynamically populated -->
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- MODAL: ADD NEW LISTING -->
+      <div id="modal-add-listing" class="app-modal">
+        <div class="modal-card modal-lg glass-panel">
+          <div class="modal-header">
+            <div class="modal-title-with-icon">
+              <span class="modal-icon">➕</span>
+              <div>
+                <h3>إضافة عرض جديد (عتاد أو محصول)</h3>
+                <span class="modal-sub">اعرض آلتك للإيجار أو منتوجك للبيع للمزارعين</span>
+              </div>
+            </div>
+            <button class="btn-close-modal" onclick="window.FarmateApp.closeModal('modal-add-listing')">✕</button>
+          </div>
+          <div class="modal-body">
+            <form id="add-listing-form" onsubmit="event.preventDefault(); window.FarmateApp.submitNewListing();">
+              <div class="input-group">
+                <label class="input-label">نوع العرض</label>
+                <select id="new-listing-type" class="input-field" onchange="window.FarmateApp.handleListingTypeChange(this.value)">
+                  <option value="machinery" selected>🚜 آلة زراعية / شاحنة للإيجار والخدمات</option>
+                  <option value="product">🌾 محصول فلاحي أو مدخلات للبيع</option>
+                </select>
+              </div>
+
+              <div class="input-group">
+                <label class="input-label">عنوان العرض</label>
+                <input type="text" id="new-listing-title" class="input-field" placeholder="مثال: جرار نيوهولاند 110 حصان مع سكة حرث" required>
+              </div>
+
+              <div class="input-row-2">
+                <div class="input-group">
+                  <label class="input-label">السعر المقترح</label>
+                  <input type="text" id="new-listing-price" class="input-field" placeholder="مثال: 4,000 دج" required>
+                </div>
+                <div class="input-group">
+                  <label class="input-label">الوحدة</label>
+                  <input type="text" id="new-listing-unit" class="input-field" placeholder="مثال: / هكتار أو / قنطار" required>
+                </div>
+              </div>
+
+              <div class="input-group">
+                <label class="input-label">الولاية والموقع</label>
+                <input type="text" id="new-listing-location" class="input-field" value="عين ولمان، سطيف" required>
+              </div>
+
+              <div class="input-group">
+                <label class="input-label">المواصفات والوصف</label>
+                <textarea id="new-listing-desc" class="input-field" rows="2" placeholder="اذكر حالة العتاد، سنة الصنع، توفر السائق والوقود، أو نوعية المحصول..." required></textarea>
+              </div>
+
+              <div class="modal-footer mt-3">
+                <button type="submit" class="btn-primary-neon btn-lg w-full">
+                  <span>نشر العرض فوراً في المنصة 🚀</span>
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+
+    </main>
+  </div>
+
+  <!-- Main JavaScript Logic -->
+  <script src="script.js"></script>
+</body>
+</html>
