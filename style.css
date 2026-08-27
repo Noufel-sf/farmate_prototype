@@ -90,6 +90,8 @@
 html, body {
   width: 100%;
   height: 100%;
+  height: 100dvh;
+  min-height: -webkit-fill-available;
   direction: rtl;
   text-align: right;
   font-family: var(--font-arabic);
@@ -118,8 +120,9 @@ html, body {
 /* App Viewport & Clean Container (No Phone Borders / Ready for Hosting) */
 .device-viewport {
   width: 100%;
-  height: 100vh;
-  min-height: 100vh;
+  height: 100%;
+  height: 100dvh;
+  min-height: -webkit-fill-available;
   display: flex;
   justify-content: center;
   align-items: stretch;
@@ -130,8 +133,9 @@ html, body {
 .mobile-frame {
   width: 100%;
   max-width: 480px;
-  height: 100vh;
-  min-height: 100vh;
+  height: 100%;
+  height: 100dvh;
+  min-height: -webkit-fill-available;
   background: var(--bg-gradient);
   background-color: var(--bg-app);
   border-radius: 0 !important;
@@ -531,6 +535,7 @@ button {
   display: flex;
   flex-direction: column;
   height: 100%;
+  height: 100dvh;
   width: 100%;
   overflow: hidden;
   position: relative;
@@ -541,7 +546,8 @@ button {
 }
 
 .app-topbar {
-  padding: 10px 18px;
+  flex-shrink: 0;
+  padding: 10px 16px;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -549,7 +555,6 @@ button {
   backdrop-filter: blur(12px);
   border-bottom: 1px solid var(--surface-glass-border);
   z-index: 40;
-  flex-shrink: 0;
 }
 
 .topbar-right {
@@ -667,7 +672,8 @@ button {
   flex: 1;
   overflow-y: auto;
   overflow-x: hidden;
-  padding-bottom: calc(96px + env(safe-area-inset-bottom, 0px)); /* Clearance for elevated bottom nav */
+  -webkit-overflow-scrolling: touch;
+  padding-bottom: 20px;
   position: relative;
 }
 
@@ -687,31 +693,27 @@ button {
 }
 
 /* ==========================================================================
-   ELEVATED FLOATING 5-ITEM BOTTOM NAVIGATION BAR
+   LINKEDIN-STYLE SOLID FIXED BOTTOM NAVIGATION DOCK
    ========================================================================== */
 .bottom-nav-bar {
-  position: absolute;
-  bottom: calc(12px + env(safe-area-inset-bottom, 0px));
-  left: 12px;
-  right: 12px;
-  height: 64px;
-  background: rgba(255, 255, 255, 0.95);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border: 1.5px solid rgba(139, 92, 246, 0.18);
-  border-radius: var(--radius-full);
+  flex-shrink: 0;
+  width: 100%;
+  height: 56px;
+  background: #ffffff;
+  border-top: 1px solid rgba(139, 92, 246, 0.14);
   display: flex;
   justify-content: space-around;
   align-items: center;
   padding: 0 4px;
   z-index: 50;
-  box-shadow: 0 10px 32px rgba(109, 40, 217, 0.12), 0 2px 8px rgba(0, 0, 0, 0.04);
+  box-shadow: 0 -2px 12px rgba(0, 0, 0, 0.05);
+  position: relative;
 }
 
 .theme-dark .bottom-nav-bar {
-  background: rgba(26, 21, 51, 0.96);
-  border-color: rgba(139, 92, 246, 0.28);
-  box-shadow: 0 10px 32px rgba(0, 0, 0, 0.45);
+  background: #151128;
+  border-color: rgba(139, 92, 246, 0.22);
+  box-shadow: 0 -2px 14px rgba(0, 0, 0, 0.4);
 }
 
 .nav-item {
@@ -719,51 +721,72 @@ button {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 6px 8px;
-  border-radius: var(--radius-full);
-  color: var(--text-muted);
-  transition: var(--transition-fast);
+  height: 100%;
+  padding: 4px 6px;
+  color: #64748B;
+  transition: all 0.2s ease;
   flex: 1;
+  position: relative;
+  cursor: pointer;
 }
 
 .nav-icon-wrap {
-  width: 26px;
-  height: 26px;
+  width: 24px;
+  height: 24px;
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: var(--transition-fast);
+  transition: all 0.2s ease;
+}
+
+.nav-icon-wrap svg {
+  width: 22px;
+  height: 22px;
 }
 
 .nav-label {
-  font-size: 11px;
+  font-size: 10.5px;
   font-weight: 700;
   margin-top: 2px;
   white-space: nowrap !important;
   letter-spacing: -0.2px;
-  transition: var(--transition-fast);
+  line-height: 1;
+  transition: all 0.2s ease;
 }
 
+/* LinkedIn-Style Active State: Top Bar Indicator & Brand Colors */
 .nav-item.active {
-  color: var(--primary-purple-dark);
+  color: var(--primary-purple);
+}
+
+.nav-item.active::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 20%;
+  right: 20%;
+  height: 3px;
+  background: var(--primary-purple);
+  border-radius: 0 0 3px 3px;
 }
 
 .nav-item.active .nav-icon-wrap {
   color: var(--primary-purple);
-  transform: translateY(-2px);
+  transform: scale(1.06);
 }
 
 .nav-item.active .nav-label {
   font-weight: 900;
-  color: var(--primary-purple-dark);
+  color: var(--primary-purple);
 }
 
 .theme-dark .nav-item.active {
   color: var(--neon-green);
 }
-.theme-dark .nav-item.active .nav-icon-wrap {
-  color: var(--neon-green);
+.theme-dark .nav-item.active::before {
+  background: var(--neon-green);
 }
+.theme-dark .nav-item.active .nav-icon-wrap,
 .theme-dark .nav-item.active .nav-label {
   color: var(--neon-green);
 }
@@ -3208,12 +3231,13 @@ input:checked + .switch-slider:before {
   left: 0;
   width: 100%;
   height: 100%;
+  height: 100dvh;
   background: var(--bg-app);
   z-index: 200;
   display: flex;
   flex-direction: column;
   overflow: hidden;
-  animation: slideViewIn 0.28s cubic-bezier(0.16, 1, 0.3, 1);
+  animation: slideViewIn 0.25s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 @keyframes slideViewIn {
@@ -3222,15 +3246,15 @@ input:checked + .switch-slider:before {
 }
 
 .product-page-topbar {
+  flex-shrink: 0;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 12px 16px;
-  background: rgba(255, 255, 255, 0.92);
+  padding: 10px 16px;
+  background: rgba(255, 255, 255, 0.95);
   backdrop-filter: blur(14px);
   border-bottom: 1px solid var(--surface-glass-border);
   z-index: 20;
-  flex-shrink: 0;
 }
 
 .theme-dark .product-page-topbar {
@@ -3276,7 +3300,8 @@ input:checked + .switch-slider:before {
   flex: 1;
   overflow-y: auto;
   overflow-x: hidden;
-  padding: 14px 16px 110px; /* Space for bottom purchase dock */
+  -webkit-overflow-scrolling: touch;
+  padding: 14px 16px 20px;
 }
 
 .product-page-inner {
@@ -3546,29 +3571,27 @@ input:checked + .switch-slider:before {
   display: block;
 }
 
-/* Product Page Floating Purchase Dock */
+/* Product Page Fixed Bottom Purchase Dock */
 .product-page-bottom-dock {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  background: rgba(255, 255, 255, 0.95);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border-top: 1px solid var(--surface-glass-border);
-  padding: 12px 16px calc(14px + env(safe-area-inset-bottom, 0px));
+  flex-shrink: 0;
+  width: 100%;
+  background: #ffffff;
+  border-top: 1px solid rgba(139, 92, 246, 0.15);
+  padding: 10px 16px 12px;
   z-index: 30;
-  box-shadow: 0 -8px 24px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 -4px 16px rgba(0, 0, 0, 0.06);
 }
 
 .theme-dark .product-page-bottom-dock {
-  background: rgba(24, 18, 48, 0.96);
+  background: #151128;
+  border-color: rgba(139, 92, 246, 0.25);
+  box-shadow: 0 -4px 16px rgba(0, 0, 0, 0.35);
 }
 
 .purchase-dock-inner {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 8px;
 }
 
 .dock-qty-box {
