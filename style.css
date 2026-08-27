@@ -62,12 +62,19 @@
 }
 
 /* Dark Theme Variables */
-.theme-dark {
+:root.theme-dark,
+:root[data-theme="dark"],
+html.theme-dark,
+html[data-theme="dark"],
+body.theme-dark,
+body[data-theme="dark"],
+.theme-dark,
+[data-theme="dark"] {
   --bg-app: #0f0c1e;
   --bg-gradient: linear-gradient(175deg, #130f28 0%, #0d0a1b 100%);
   --surface-white: #1a1633;
-  --surface-glass: rgba(26, 22, 51, 0.92);
-  --surface-glass-border: rgba(139, 92, 246, 0.25);
+  --surface-glass: rgba(26, 22, 51, 0.94);
+  --surface-glass-border: rgba(139, 92, 246, 0.28);
   --surface-card: #1f1a3d;
   --surface-subtle: #26204c;
   --primary-purple-soft: #2e265c;
@@ -75,6 +82,7 @@
   --text-main: #f5f3ff;
   --text-secondary: #c4bfe3;
   --text-muted: #958fbe;
+  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.3);
   --shadow-md: 0 8px 24px rgba(0, 0, 0, 0.4);
   --shadow-lg: 0 16px 36px rgba(0, 0, 0, 0.6);
 }
@@ -699,8 +707,8 @@ button {
   flex-shrink: 0;
   width: 100%;
   height: 56px;
-  background: #ffffff;
-  border-top: 1px solid rgba(139, 92, 246, 0.14);
+  background: var(--surface-white);
+  border-top: 1px solid var(--surface-glass-border);
   display: flex;
   justify-content: space-around;
   align-items: center;
@@ -710,7 +718,8 @@ button {
   position: relative;
 }
 
-.theme-dark .bottom-nav-bar {
+.theme-dark .bottom-nav-bar,
+[data-theme="dark"] .bottom-nav-bar {
   background: #151128;
   border-color: rgba(139, 92, 246, 0.22);
   box-shadow: 0 -2px 14px rgba(0, 0, 0, 0.4);
@@ -780,14 +789,18 @@ button {
   color: var(--primary-purple);
 }
 
-.theme-dark .nav-item.active {
+.theme-dark .nav-item.active,
+[data-theme="dark"] .nav-item.active {
   color: var(--neon-green);
 }
-.theme-dark .nav-item.active::before {
+.theme-dark .nav-item.active::before,
+[data-theme="dark"] .nav-item.active::before {
   background: var(--neon-green);
 }
 .theme-dark .nav-item.active .nav-icon-wrap,
-.theme-dark .nav-item.active .nav-label {
+.theme-dark .nav-item.active .nav-label,
+[data-theme="dark"] .nav-item.active .nav-icon-wrap,
+[data-theme="dark"] .nav-item.active .nav-label {
   color: var(--neon-green);
 }
 
@@ -3575,14 +3588,15 @@ input:checked + .switch-slider:before {
 .product-page-bottom-dock {
   flex-shrink: 0;
   width: 100%;
-  background: #ffffff;
-  border-top: 1px solid rgba(139, 92, 246, 0.15);
+  background: var(--surface-white);
+  border-top: 1px solid var(--surface-glass-border);
   padding: 10px 16px 12px;
   z-index: 30;
   box-shadow: 0 -4px 16px rgba(0, 0, 0, 0.06);
 }
 
-.theme-dark .product-page-bottom-dock {
+.theme-dark .product-page-bottom-dock,
+[data-theme="dark"] .product-page-bottom-dock {
   background: #151128;
   border-color: rgba(139, 92, 246, 0.25);
   box-shadow: 0 -4px 16px rgba(0, 0, 0, 0.35);

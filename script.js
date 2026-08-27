@@ -486,6 +486,7 @@
 
   // Initialize Application
   window.addEventListener('DOMContentLoaded', () => {
+    initTheme();
     initClock();
     initModalEvents();
     renderStoreCategories();
@@ -497,6 +498,22 @@
     updateCartUI();
     updateFavBadge();
   });
+
+  // Dark / Light Theme Initializer
+  function initTheme() {
+    try {
+      const savedTheme = localStorage.getItem('farmate_theme');
+      if (savedTheme === 'dark') {
+        document.body.classList.add('theme-dark');
+        document.body.setAttribute('data-theme', 'dark');
+        document.documentElement.classList.add('theme-dark');
+        document.documentElement.setAttribute('data-theme', 'dark');
+        AppState.theme = 'dark';
+        const check = document.getElementById('theme-toggle-check');
+        if (check) check.checked = true;
+      }
+    } catch(e) {}
+  }
 
   // Modal Backdrop Click-Outside & Keyboard Escape Handler
   function initModalEvents() {
@@ -649,15 +666,27 @@
 
     // Dark / Light Theme
     toggleTheme: function () {
-      const isDark = document.body.getAttribute('data-theme') === 'dark';
+      const isDark = document.body.classList.contains('theme-dark') || document.body.getAttribute('data-theme') === 'dark';
       if (!isDark) {
+        document.body.classList.add('theme-dark');
         document.body.setAttribute('data-theme', 'dark');
+        document.documentElement.classList.add('theme-dark');
+        document.documentElement.setAttribute('data-theme', 'dark');
         AppState.theme = 'dark';
-        showToast('تم تفعيل الوضع الليلي', 'info');
+        try { localStorage.setItem('farmate_theme', 'dark'); } catch(e){}
+        const check = document.getElementById('theme-toggle-check');
+        if (check) check.checked = true;
+        showToast('تم تفعيل الوضع الليلي 🌙', 'info');
       } else {
+        document.body.classList.remove('theme-dark');
         document.body.removeAttribute('data-theme');
+        document.documentElement.classList.remove('theme-dark');
+        document.documentElement.removeAttribute('data-theme');
         AppState.theme = 'light';
-        showToast('تم تفعيل الوضع النهاري', 'info');
+        try { localStorage.setItem('farmate_theme', 'light'); } catch(e){}
+        const check = document.getElementById('theme-toggle-check');
+        if (check) check.checked = false;
+        showToast('تم تفعيل الوضع النهاري ☀️', 'info');
       }
     },
 
