@@ -4213,4 +4213,73 @@ input:checked + .switch-slider:before {
   transition: width 0.4s ease;
 }
 
+/* Product Form Live Image Preview Box */
+.prod-form-img-preview-box {
+  width: 100%;
+  height: 150px;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  position: relative;
+  border: 2px dashed rgba(139, 92, 246, 0.35);
+  background: var(--surface-subtle);
+  cursor: pointer;
+  box-shadow: var(--shadow-sm);
+  transition: all 0.25s ease;
+  margin-top: 4px;
+}
+
+.prod-form-img-preview-box:hover {
+  border-color: var(--primary-purple);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+
+.prod-preview-thumb {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.35s ease;
+}
+
+.prod-form-img-preview-box:hover .prod-preview-thumb {
+  transform: scale(1.04);
+}
+
+.prod-preview-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(15, 12, 30, 0.75) 0%, transparent 60%);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 10px 12px;
+  pointer-events: none;
+}
+
+.preview-badge-pill {
+  align-self: flex-start;
+  background: var(--primary-purple-dark);
+  color: #ffffff;
+  font-size: 10.5px;
+  font-weight: 800;
+  padding: 3px 10px;
+  border-radius: var(--radius-full);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
+}
+
+.preview-change-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: #ffffff;
+  font-size: 11px;
+  font-weight: 700;
+  background: rgba(15, 12, 30, 0.65);
+  backdrop-filter: blur(8px);
+  padding: 4px 10px;
+  border-radius: var(--radius-full);
+  align-self: flex-end;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
 

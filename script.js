@@ -1681,7 +1681,10 @@
       document.getElementById('edit-prod-oldprice').value = '';
       document.getElementById('edit-prod-supplier').value = `${AppState.userProfile.name} - ${AppState.userProfile.wilaya}`;
       document.getElementById('edit-prod-badge').value = 'محصول طازج';
-      document.getElementById('edit-prod-image').value = 'https://images.unsplash.com/photo-1574323347407-f5e1ad6d020b?w=500&auto=format&fit=crop&q=80';
+      const defaultImg = 'https://images.unsplash.com/photo-1574323347407-f5e1ad6d020b?w=500&auto=format&fit=crop&q=80';
+      document.getElementById('edit-prod-image').value = defaultImg;
+      window.FarmateApp.updateProductImagePreview(defaultImg);
+      window.FarmateApp.updateProductBadgePreview('محصول طازج');
       document.getElementById('edit-prod-desc').value = 'محصول ممتاز عالي الجودة مطابق للمواصفات ومخزن في ظروف مثالية.';
       window.FarmateApp.openModal('modal-edit-store-product');
     },
@@ -1702,9 +1705,49 @@
       document.getElementById('edit-prod-supplier').value = prod.supplier;
       document.getElementById('edit-prod-badge').value = prod.badge || '';
       document.getElementById('edit-prod-image').value = prod.image;
+      window.FarmateApp.updateProductImagePreview(prod.image);
+      window.FarmateApp.updateProductBadgePreview(prod.badge || 'منتج معتمد');
       document.getElementById('edit-prod-desc').value = prod.description;
 
       window.FarmateApp.openModal('modal-edit-store-product');
+    },
+
+    updateProductImagePreview: function (url) {
+      const previewImg = document.getElementById('edit-prod-preview-img');
+      if (previewImg && url) {
+        previewImg.src = url;
+        previewImg.onerror = function () {
+          this.src = 'https://images.unsplash.com/photo-1574323347407-f5e1ad6d020b?w=500&auto=format&fit=crop&q=80';
+        };
+      }
+    },
+
+    updateProductBadgePreview: function (badgeText) {
+      const badgeEl = document.getElementById('edit-prod-preview-badge');
+      if (badgeEl) {
+        badgeEl.innerText = badgeText.trim() || 'منتج معتمد';
+      }
+    },
+
+    setProductPresetImage: function (url) {
+      const imgInput = document.getElementById('edit-prod-image');
+      if (imgInput) imgInput.value = url;
+      window.FarmateApp.updateProductImagePreview(url);
+    },
+
+    handleProductImageUpload: function (event) {
+      const file = event.target.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = function (e) {
+          const imgUrl = e.target.result;
+          const imgInput = document.getElementById('edit-prod-image');
+          if (imgInput) imgInput.value = imgUrl;
+          window.FarmateApp.updateProductImagePreview(imgUrl);
+          showToast(`تم تحميل صورة المنتج بنجاح (${file.name}) 📸`, 'success');
+        };
+        reader.readAsDataURL(file);
+      }
     },
 
     saveStoreProduct: function () {

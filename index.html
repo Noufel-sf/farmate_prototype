@@ -1502,19 +1502,35 @@
                 </div>
                 <div class="input-group">
                   <label class="input-label">شارة ترويجية (Badge)</label>
-                  <input type="text" id="edit-prod-badge" class="input-field" placeholder="مثال: الأكثر طلباً، معتمد CCLS">
+                  <input type="text" id="edit-prod-badge" class="input-field" placeholder="مثال: الأكثر طلباً، معتمد CCLS" oninput="window.FarmateApp.updateProductBadgePreview(this.value)">
                 </div>
+              </div>
+
+              <!-- Live Image Preview Box -->
+              <div class="input-group">
+                <label class="input-label">معاينة صورة المنتج الفلاحي</label>
+                <div class="prod-form-img-preview-box" id="edit-prod-preview-container" onclick="document.getElementById('edit-prod-file-input').click()" title="انقر لرفع صورة من هاتفك">
+                  <img id="edit-prod-preview-img" src="https://images.unsplash.com/photo-1574323347407-f5e1ad6d020b?w=500&auto=format&fit=crop&q=80" alt="معاينة صورة المنتج" class="prod-preview-thumb">
+                  <div class="prod-preview-overlay">
+                    <span class="preview-badge-pill" id="edit-prod-preview-badge">محصول طازج</span>
+                    <span class="preview-change-btn">
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+                      تغيير الصورة أو رفع من الهاتف
+                    </span>
+                  </div>
+                </div>
+                <input type="file" id="edit-prod-file-input" style="display:none" accept="image/*" onchange="window.FarmateApp.handleProductImageUpload(event)">
               </div>
 
               <div class="input-group">
                 <label class="input-label">رابط صورة المنتج (أو اختر من النماذج)</label>
-                <input type="url" id="edit-prod-image" class="input-field" value="https://images.unsplash.com/photo-1574323347407-f5e1ad6d020b?w=500&auto=format&fit=crop&q=80" required>
+                <input type="url" id="edit-prod-image" class="input-field" value="https://images.unsplash.com/photo-1574323347407-f5e1ad6d020b?w=500&auto=format&fit=crop&q=80" oninput="window.FarmateApp.updateProductImagePreview(this.value)" required>
                 <div class="prod-quick-img-picker">
                   <span style="font-size:11px; color:var(--text-muted);">صور مقترحة:</span>
-                  <button type="button" class="btn-xs-chip" onclick="document.getElementById('edit-prod-image').value='https://images.unsplash.com/photo-1574323347407-f5e1ad6d020b?w=500&auto=format&fit=crop&q=80'">🌾 حبوب وقمح</button>
-                  <button type="button" class="btn-xs-chip" onclick="document.getElementById('edit-prod-image').value='https://images.unsplash.com/photo-1592417817098-8f3d6910985b?w=500&auto=format&fit=crop&q=80'">🍅 طماطم وخضار</button>
-                  <button type="button" class="btn-xs-chip" onclick="document.getElementById('edit-prod-image').value='https://images.unsplash.com/photo-1628352081506-83c43123ed6d?w=500&auto=format&fit=crop&q=80'">🧪 أسمدة ومغذيات</button>
-                  <button type="button" class="btn-xs-chip" onclick="document.getElementById('edit-prod-image').value='https://images.unsplash.com/photo-1563514227147-6d2ff665a6a0?w=500&auto=format&fit=crop&q=80'">💧 أنابيب وعتاد</button>
+                  <button type="button" class="btn-xs-chip" onclick="window.FarmateApp.setProductPresetImage('https://images.unsplash.com/photo-1574323347407-f5e1ad6d020b?w=500&auto=format&fit=crop&q=80')">🌾 حبوب وقمح</button>
+                  <button type="button" class="btn-xs-chip" onclick="window.FarmateApp.setProductPresetImage('https://images.unsplash.com/photo-1592417817098-8f3d6910985b?w=500&auto=format&fit=crop&q=80')">🍅 طماطم وخضار</button>
+                  <button type="button" class="btn-xs-chip" onclick="window.FarmateApp.setProductPresetImage('https://images.unsplash.com/photo-1628352081506-83c43123ed6d?w=500&auto=format&fit=crop&q=80')">🧪 أسمدة ومغذيات</button>
+                  <button type="button" class="btn-xs-chip" onclick="window.FarmateApp.setProductPresetImage('https://images.unsplash.com/photo-1563514227147-6d2ff665a6a0?w=500&auto=format&fit=crop&q=80')">💧 أنابيب وعتاد</button>
                 </div>
               </div>
 
