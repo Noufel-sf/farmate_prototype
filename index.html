@@ -203,18 +203,18 @@
                 </div>
               </div>
 
-              <!-- Quick Disease Scanner Banner -->
+              <!-- Quick Comprehensive AI Agricultural Analyzer & Scanner Banner -->
               <div class="scanner-hero-card" onclick="window.FarmateApp.openDiseaseDetectionModal()">
                 <div class="scanner-hero-content">
                   <div class="scanner-icon-wrap">
                     <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#10B981" stroke-width="2"><path d="M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2Zm0 18a8 8 0 1 1 8-8 8 8 0 0 1-8 8Z"/><path d="M12 6v6l4 2"/><path d="M7 17l10-10"/></svg>
                   </div>
                   <div class="scanner-hero-text">
-                    <strong>تشخيص أمراض النبات بالذكاء الاصطناعي 📸</strong>
-                    <span>صوّر أي نبتة أو ورقة مصابة واحصل على تشخيص فوري وعلاج من المتجر</span>
+                    <strong>الفحص والتحليل الزراعي الشامل بالذكاء الاصطناعي 🌾</strong>
+                    <span>تحليل فوري للمحاصيل، فحص التربة، تشخيص الآفات، واستشارات التسميد والسقي المخصصة</span>
                   </div>
                 </div>
-                <button class="btn-scanner-cta">فحص الآن</button>
+                <button class="btn-scanner-cta">فحص واستشارة ⚡</button>
               </div>
 
               <!-- Chat Message Feed -->
@@ -296,16 +296,19 @@
                 <button class="btn-filter-trigger" onclick="window.FarmateApp.openDrawer('store-filter-drawer')" aria-label="تصفية المنتجات">
                   <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/></svg>
                 </button>
+                <button class="btn-primary-neon btn-sm flex-shrink-0" onclick="window.FarmateApp.openAddStoreProductModal()" title="إضافة منتج أو محصول للبيع في المتجر">
+                  <span>+ بيع منتوجك</span>
+                </button>
               </div>
 
-              <!-- Loyalty / Free Delivery Tracker Banner -->
-              <div class="loyalty-banner glass-panel">
+              <!-- Loyalty / Free Delivery VIP Tracker Banner -->
+              <div class="loyalty-banner glass-panel" id="store-loyalty-banner" onclick="window.FarmateApp.openOrdersTrackerModal()" style="cursor:pointer;" title="انقر لعرض تفاصيل برنامج الوفاء">
                 <div class="loyalty-info">
-                  <div class="loyalty-badge">🚚 توصيل مجاني</div>
-                  <span class="loyalty-desc">أضف <strong>2,500 دج</strong> للحصول على توصيل مجاني لولايتك</span>
+                  <div class="loyalty-badge" id="loyalty-badge-tag">⭐ برنامج الوفاء الفلاحي</div>
+                  <span class="loyalty-desc" id="loyalty-desc-text">أكمل 5 طلبيات للحصول على <strong>شحن مجاني دائم</strong> لجميع مشترياتك! 🚚</span>
                 </div>
                 <div class="loyalty-progress-bar">
-                  <div class="loyalty-fill" style="width: 65%;"></div>
+                  <div class="loyalty-fill" id="loyalty-progress-fill" style="width: 80%;"></div>
                 </div>
               </div>
 
@@ -799,13 +802,24 @@
               <span class="menu-arrow">‹</span>
             </button>
 
+            <button class="drawer-menu-item" onclick="window.FarmateApp.openManageStoreProductsModal()">
+              <span class="menu-item-icon svg-icon">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
+              </span>
+              <div class="menu-item-text">
+                <strong>إدارة منتجاتي ومحاصيلي في المتجر 🌾</strong>
+                <span>إضافة، تعديل وحذف منتجاتك المعروضة للبيع</span>
+              </div>
+              <span class="menu-arrow">‹</span>
+            </button>
+
             <button class="drawer-menu-item" onclick="window.FarmateApp.openMyListingsModal()">
               <span class="menu-item-icon svg-icon">
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="3" width="15" height="13" rx="2"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
               </span>
               <div class="menu-item-text">
-                <strong>عتادي ومنتجاتي المعروضة</strong>
-                <span>إدارة الجرار والمحاصيل المعروضة للإيجار والبيع</span>
+                <strong>عتادي وآلاتي المعروضة للإيجار</strong>
+                <span>إدارة الجرارات والشاحنات المعروضة للعمل</span>
               </div>
               <span class="menu-arrow">‹</span>
             </button>
@@ -978,15 +992,15 @@
       <!-- INTERACTIVE MODALS -->
       <!-- ========================================================================= -->
 
-      <!-- MODAL: PLANT DISEASE DETECTION (AI VISION SCANNER) -->
+      <!-- MODAL: COMPREHENSIVE AI AGRICULTURAL SCANNER & DIAGNOSTICS -->
       <div id="modal-disease-scan" class="app-modal">
         <div class="modal-card modal-lg glass-panel">
           <div class="modal-header">
             <div class="modal-title-with-icon">
               <span class="modal-icon">🔬</span>
               <div>
-                <h3>تحليل وفحص أمراض النبات بالذكاء الاصطناعي</h3>
-                <span class="modal-sub">اختر عينة مصابة أو ارفع صورة لمحصولك</span>
+                <h3>المستشار والفاحص الزراعي الشامل بالذكاء الاصطناعي 🌾</h3>
+                <span class="modal-sub">فحص محاصيل، تشخيص آفات، استشارات تسميد وري فلاحي مخصص</span>
               </div>
             </div>
             <button class="btn-close-modal" onclick="window.FarmateApp.closeModal('modal-disease-scan')">✕</button>
@@ -995,11 +1009,15 @@
           <div class="modal-body">
             <!-- Sample Selector Grid -->
             <div class="scan-samples-picker">
-              <span class="samples-title">اختر من العينات الجاهزة للاختبار الفوري:</span>
+              <span class="samples-title">اختر من العينات الجاهزة للتحليل الفوري:</span>
               <div class="samples-grid">
                 <div class="sample-item active" onclick="window.FarmateApp.selectDiseaseSample(0, this)">
                   <img src="https://images.unsplash.com/photo-1592878904946-b3cd8ae243d0?w=200&auto=format&fit=crop&q=80" alt="ورقة طماطم مصابة باللفحة" class="sample-img">
-                  <span>لفحة الطماطم المتأخرة</span>
+                  <span>لفحة الطماطم (مكافحة فطرية)</span>
+                </div>
+                <div class="sample-item" onclick="window.FarmateApp.selectDiseaseSample(3, this)">
+                  <img src="https://images.unsplash.com/photo-1574323347407-f5e1ad6d020b?w=200&auto=format&fit=crop&q=80" alt="أوراق قمح صفراء" class="sample-img">
+                  <span>اصفرار القمح (استشارة تسميد)</span>
                 </div>
                 <div class="sample-item" onclick="window.FarmateApp.selectDiseaseSample(1, this)">
                   <img src="https://images.unsplash.com/photo-1533038590840-1cde6e668a91?w=200&auto=format&fit=crop&q=80" alt="أوراق زيتون مصابة" class="sample-img">
@@ -1007,7 +1025,7 @@
                 </div>
                 <div class="sample-item" onclick="window.FarmateApp.selectDiseaseSample(2, this)">
                   <img src="https://images.unsplash.com/photo-1589134777092-581ecd83056e?w=200&auto=format&fit=crop&q=80" alt="نبات بطاطا مصاب" class="sample-img">
-                  <span>بياض دقيقي في البطاطا</span>
+                  <span>البياض الدقيقي في الخضروات</span>
                 </div>
               </div>
             </div>
@@ -1393,6 +1411,121 @@
               <div class="modal-footer mt-3">
                 <button type="submit" class="btn-primary-neon btn-lg w-full">
                   <span>نشر العرض فوراً في المنصة 🚀</span>
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+
+      <!-- MODAL: MANAGE STORE PRODUCTS (ADD / EDIT / DELETE) -->
+      <div id="modal-manage-store-products" class="app-modal">
+        <div class="modal-card modal-lg glass-panel">
+          <div class="modal-header">
+            <div class="modal-title-with-icon">
+              <span class="modal-icon">🌾</span>
+              <div>
+                <h3>إدارة منتجاتي ومحاصيلي في المتجر</h3>
+                <span class="modal-sub">إضافة، تعديل، وحذف منتجاتك المعروضة للبيع</span>
+              </div>
+            </div>
+            <button class="btn-close-modal" onclick="window.FarmateApp.closeModal('modal-manage-store-products')">✕</button>
+          </div>
+          <div class="modal-body">
+            <div class="listings-top-bar">
+              <span class="listings-count-badge" id="manage-prods-count-badge">8 منتجات بالمتجر</span>
+              <button class="btn-primary-neon btn-sm" onclick="window.FarmateApp.openAddStoreProductModal()">
+                <span>+ إضافة منتج جديد للبيع</span>
+              </button>
+            </div>
+            <div class="my-store-products-list" id="my-store-products-container">
+              <!-- Rendered dynamically via JS -->
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- MODAL: ADD / EDIT STORE PRODUCT FORM -->
+      <div id="modal-edit-store-product" class="app-modal">
+        <div class="modal-card modal-lg glass-panel">
+          <div class="modal-header">
+            <div class="modal-title-with-icon">
+              <span class="modal-icon">📦</span>
+              <div>
+                <h3 id="edit-prod-modal-title">إضافة منتج جديد للمتجر</h3>
+                <span class="modal-sub">اعرض بذورك، أسمدتك، أو محصولك الزراعي للبيع</span>
+              </div>
+            </div>
+            <button class="btn-close-modal" onclick="window.FarmateApp.closeModal('modal-edit-store-product')">✕</button>
+          </div>
+          <div class="modal-body">
+            <form id="edit-product-form" onsubmit="event.preventDefault(); window.FarmateApp.saveStoreProduct();">
+              <input type="hidden" id="edit-prod-id" value="">
+
+              <div class="input-group">
+                <label class="input-label">اسم المنتج أو المحصول الفلاحي *</label>
+                <input type="text" id="edit-prod-name" class="input-field" placeholder="مثال: قمح صلب صنف سيرتا جودة ممتازة" required>
+              </div>
+
+              <div class="input-row-2">
+                <div class="input-group">
+                  <label class="input-label">الفئة والتصنيف *</label>
+                  <select id="edit-prod-category" class="input-field" required>
+                    <option value="fertilizers">أسمدة ومغذيات التربة</option>
+                    <option value="seeds" selected>بذور وتقاوي معتمدة</option>
+                    <option value="pesticides">مبيدات ووقاية النبات</option>
+                    <option value="irrigation">عتاد السقي والري</option>
+                    <option value="feed">أعلاف وتغذية الماشية</option>
+                  </select>
+                </div>
+                <div class="input-group">
+                  <label class="input-label">وحدة البيع *</label>
+                  <input type="text" id="edit-prod-unit" class="input-field" placeholder="مثال: كيس 50 كغ، قنطار، علبة" value="كيس 50 كغ" required>
+                </div>
+              </div>
+
+              <div class="input-row-2">
+                <div class="input-group">
+                  <label class="input-label">السعر الحالي (دج) *</label>
+                  <input type="number" id="edit-prod-price" class="input-field" placeholder="مثال: 4200" required>
+                </div>
+                <div class="input-group">
+                  <label class="input-label">السعر القديم قبل الخصم (اختياري)</label>
+                  <input type="number" id="edit-prod-oldprice" class="input-field" placeholder="مثال: 4800">
+                </div>
+              </div>
+
+              <div class="input-row-2">
+                <div class="input-group">
+                  <label class="input-label">اسم البائع / المزرعة</label>
+                  <input type="text" id="edit-prod-supplier" class="input-field" value="مزرعة رابح منصوري - سطيف" required>
+                </div>
+                <div class="input-group">
+                  <label class="input-label">شارة ترويجية (Badge)</label>
+                  <input type="text" id="edit-prod-badge" class="input-field" placeholder="مثال: الأكثر طلباً، معتمد CCLS">
+                </div>
+              </div>
+
+              <div class="input-group">
+                <label class="input-label">رابط صورة المنتج (أو اختر من النماذج)</label>
+                <input type="url" id="edit-prod-image" class="input-field" value="https://images.unsplash.com/photo-1574323347407-f5e1ad6d020b?w=500&auto=format&fit=crop&q=80" required>
+                <div class="prod-quick-img-picker">
+                  <span style="font-size:11px; color:var(--text-muted);">صور مقترحة:</span>
+                  <button type="button" class="btn-xs-chip" onclick="document.getElementById('edit-prod-image').value='https://images.unsplash.com/photo-1574323347407-f5e1ad6d020b?w=500&auto=format&fit=crop&q=80'">🌾 حبوب وقمح</button>
+                  <button type="button" class="btn-xs-chip" onclick="document.getElementById('edit-prod-image').value='https://images.unsplash.com/photo-1592417817098-8f3d6910985b?w=500&auto=format&fit=crop&q=80'">🍅 طماطم وخضار</button>
+                  <button type="button" class="btn-xs-chip" onclick="document.getElementById('edit-prod-image').value='https://images.unsplash.com/photo-1628352081506-83c43123ed6d?w=500&auto=format&fit=crop&q=80'">🧪 أسمدة ومغذيات</button>
+                  <button type="button" class="btn-xs-chip" onclick="document.getElementById('edit-prod-image').value='https://images.unsplash.com/photo-1563514227147-6d2ff665a6a0?w=500&auto=format&fit=crop&q=80'">💧 أنابيب وعتاد</button>
+                </div>
+              </div>
+
+              <div class="input-group">
+                <label class="input-label">الوصف والتفاصيل الزراعية</label>
+                <textarea id="edit-prod-desc" class="input-field" rows="2" placeholder="اكتب تفاصيل المنتوج، نسبة الإنبات، التركيبة، أو شروط الاستلام..." required>محصول ممتاز عالي الجودة مطابق للمواصفات ومخزن في ظروف مثالية.</textarea>
+              </div>
+
+              <div class="modal-footer mt-3">
+                <button type="submit" class="btn-primary-neon btn-lg w-full">
+                  <span id="edit-prod-btn-text">حفظ المنتج وعرضه بالمتجر 🚀</span>
                 </button>
               </div>
             </form>

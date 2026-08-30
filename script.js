@@ -13,6 +13,7 @@
     currentTab: 'tab-advisor',
     isOffline: false,
     theme: 'light',
+    completedOrdersCount: parseInt(localStorage.getItem('farmate_orders_count') || '4', 10),
     wallet: {
       total: 185000,
       withdrawable: 143000,
@@ -403,6 +404,21 @@
           '3. الحفاظ على مسافات غرس متباعدة لضمان التهوية الجيدة.'
         ],
         recommendedProductId: 'p3'
+      },
+      {
+        id: 'd4',
+        title: 'نقص الآزوت والحديد واصفرار الأوراق في القمح (Nitrogen Deficiency)',
+        crop: 'الحبوب والقمح الصلب',
+        confidence: '98.2%',
+        image: 'https://images.unsplash.com/photo-1574323347407-f5e1ad6d020b?w=400&auto=format&fit=crop&q=80',
+        symptoms: 'شحوب واصفرار تدريجي يبدأ من الأوراق القديمة نحو القمة النامية مع ضعف التفرع وبطء نمو السنابل.',
+        darijaExplanation: 'يا عمي رابح، هذا اصفرار نقص التسميد الآزوطي (المانك في اليوريا DAP). الأرض محتاجة تغذية فورية باش السنبلة تعمر مليح.',
+        treatment: [
+          '1. نثر دفعة سماد يوريا 46% أو سماد مركب DAP قبل السقي أو توقع المطر.',
+          '2. رش سماد ورقي غني بالأحماض الأمينية والحديد المخلبي لتسريع الاستجابة.',
+          '3. فحص حموضة التربة وتفادي ركود مياه الأمطار في الحقل.'
+        ],
+        recommendedProductId: 'p1'
       }
     ],
 
@@ -1214,13 +1230,16 @@
       
       const newOrderId = `DZ-${Math.floor(1000 + Math.random() * 9000)}`;
       const subtotal = AppState.cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
+      const isFree = AppState.completedOrdersCount >= 5 || subtotal > 10000;
+      const deliveryFee = isFree ? 0 : 800;
+
       const newOrder = {
         id: newOrderId,
         date: 'الآن',
         status: 'in_transit',
         statusText: 'قيد التجهيز والشحن 🚚',
         eta: 'الموعد المتوقع: خلال 24 ساعة',
-        total: subtotal + 800,
+        total: subtotal + deliveryFee,
         deliveryWilaya: `${AppState.userProfile.wilaya} - ${AppState.userProfile.commune}`,
         driverName: 'سائق فارميت المعتمد',
         driverPhone: '05 50 00 11 22',
@@ -1229,6 +1248,11 @@
 
       AppState.myOrders.unshift(newOrder);
       AppState.cart = [];
+      
+      // Increment Completed Orders Count & Check VIP Perk
+      AppState.completedOrdersCount++;
+      try { localStorage.setItem('farmate_orders_count', AppState.completedOrdersCount); } catch(e){}
+      
       updateCartUI();
 
       AppState.notifications.unshift({
@@ -1240,7 +1264,11 @@
       });
       renderNotifications();
 
-      showToast(`تم تأكيد طلبك بنجاح برقم #${newOrderId}! سيتم التواصل معك عبر الهاتف 🌾`, 'success');
+      if (AppState.completedOrdersCount === 5) {
+        showToast(`🎉 مبروك عمي رابح! أكملت 5 طلبيات وأصبحت مؤهلاً للشحن المجاني الدائم VIP! 🚚✨`, 'success');
+      } else {
+        showToast(`تم تأكيد طلبك بنجاح برقم #${newOrderId}! سيتم التواصل معك عبر الهاتف 🌾`, 'success');
+      }
     },
 
     // =========================================================================
@@ -1584,6 +1612,168 @@
       window.FarmateApp.closeModal('modal-add-listing');
       showToast('تم نشر عرضك الفلاحي الجديد بنجاح على منصة فارميت! 🚀', 'success');
       window.FarmateApp.openMyListingsModal();
+    },
+
+    // =========================================================================
+    // STORE PRODUCTS MANAGEMENT (ADD / EDIT / DELETE PRODUCTS IN STORE)
+    // =========================================================================
+    openManageStoreProductsModal: function () {
+      window.FarmateApp.closeDrawer('profile-drawer');
+      const container = document.getElementById('my-store-products-container');
+      const countBadge = document.getElementById('manage-prods-count-badge');
+      if (countBadge) countBadge.innerText = `${MOCK_DATA.products.length} منتجات معروضة بالمتجر`;
+
+      if (!container) return;
+
+      if (MOCK_DATA.products.length === 0) {
+        container.innerHTML = `
+          <div class="empty-state-card">
+            <div class="empty-state-icon">🌾</div>
+            <h4>لا توجد أي منتجات بالمتجر حالياً</h4>
+            <p>أضف محصولك الفلاحي، بذورك، أو أسمدتك لتبدأ البيع المباشر للفلاحين.</p>
+          </div>
+        `;
+      } else {
+        container.innerHTML = MOCK_DATA.products.map(prod => `
+          <div class="listing-manage-card glass-panel">
+            <img src="${prod.image}" alt="${prod.name}" class="listing-thumb">
+            <div class="listing-manage-info">
+              <div class="listing-header-row">
+                <span class="listing-cat-badge">${prod.category === 'fertilizers' ? 'أسمدة ومغذيات' : (prod.category === 'seeds' ? 'بذور وتقاوي' : (prod.category === 'pesticides' ? 'مبيدات ووقاية' : (prod.category === 'irrigation' ? 'عتاد وسقي' : 'أعلاف')))}</span>
+                <span class="listing-status-badge ${prod.inStock ? 'badge-active' : 'badge-paused'}">
+                  ${prod.inStock ? 'متوفر بالمخزن' : 'نفذت الكمية'}
+                </span>
+              </div>
+              <h4 class="listing-title" onclick="window.FarmateApp.closeModal('modal-manage-store-products'); window.FarmateApp.openProductDetails('${prod.id}')" style="cursor:pointer;" title="انقر لعرض تفاصيل المنتج">${prod.name}</h4>
+              <div class="listing-price">${prod.price.toLocaleString()} دج <small style="font-size:11px; font-weight:600; color:var(--text-muted);">(${prod.unit})</small></div>
+              <div class="listing-stats-row">
+                <span>⭐ ${prod.rating} (${prod.reviewsCount} تقييم)</span>
+                <span>🏪 ${prod.supplier}</span>
+              </div>
+              <div class="listing-actions-row">
+                <button class="btn-sm-ghost" onclick="window.FarmateApp.openEditStoreProductModal('${prod.id}')">
+                  ✏️ تعديل
+                </button>
+                <button class="btn-sm-ghost" onclick="window.FarmateApp.closeModal('modal-manage-store-products'); window.FarmateApp.openProductDetails('${prod.id}')">
+                  👁️ عرض
+                </button>
+                <button class="btn-remove-fav" onclick="window.FarmateApp.deleteStoreProduct('${prod.id}')" title="حذف المنتج من المتجر">
+                  🗑️
+                </button>
+              </div>
+            </div>
+          </div>
+        `).join('');
+      }
+
+      window.FarmateApp.openModal('modal-manage-store-products');
+    },
+
+    openAddStoreProductModal: function () {
+      window.FarmateApp.closeModal('modal-manage-store-products');
+      document.getElementById('edit-prod-modal-title').innerText = 'إضافة منتج أو محصول جديد للمتجر 🌾';
+      document.getElementById('edit-prod-btn-text').innerText = 'نشر المنتج وعرضه فوراً بالمتجر 🚀';
+      document.getElementById('edit-prod-id').value = '';
+      document.getElementById('edit-prod-name').value = '';
+      document.getElementById('edit-prod-category').value = 'seeds';
+      document.getElementById('edit-prod-unit').value = 'كيس 50 كغ';
+      document.getElementById('edit-prod-price').value = '';
+      document.getElementById('edit-prod-oldprice').value = '';
+      document.getElementById('edit-prod-supplier').value = `${AppState.userProfile.name} - ${AppState.userProfile.wilaya}`;
+      document.getElementById('edit-prod-badge').value = 'محصول طازج';
+      document.getElementById('edit-prod-image').value = 'https://images.unsplash.com/photo-1574323347407-f5e1ad6d020b?w=500&auto=format&fit=crop&q=80';
+      document.getElementById('edit-prod-desc').value = 'محصول ممتاز عالي الجودة مطابق للمواصفات ومخزن في ظروف مثالية.';
+      window.FarmateApp.openModal('modal-edit-store-product');
+    },
+
+    openEditStoreProductModal: function (prodId) {
+      window.FarmateApp.closeModal('modal-manage-store-products');
+      const prod = MOCK_DATA.products.find(p => p.id === prodId);
+      if (!prod) return;
+
+      document.getElementById('edit-prod-modal-title').innerText = 'تعديل بيانات المنتج ✏️';
+      document.getElementById('edit-prod-btn-text').innerText = 'حفظ التعديلات وتحديث المتجر 💾';
+      document.getElementById('edit-prod-id').value = prod.id;
+      document.getElementById('edit-prod-name').value = prod.name;
+      document.getElementById('edit-prod-category').value = prod.category;
+      document.getElementById('edit-prod-unit').value = prod.unit;
+      document.getElementById('edit-prod-price').value = prod.price;
+      document.getElementById('edit-prod-oldprice').value = prod.oldPrice || '';
+      document.getElementById('edit-prod-supplier').value = prod.supplier;
+      document.getElementById('edit-prod-badge').value = prod.badge || '';
+      document.getElementById('edit-prod-image').value = prod.image;
+      document.getElementById('edit-prod-desc').value = prod.description;
+
+      window.FarmateApp.openModal('modal-edit-store-product');
+    },
+
+    saveStoreProduct: function () {
+      const id = document.getElementById('edit-prod-id').value;
+      const name = document.getElementById('edit-prod-name').value.trim();
+      const category = document.getElementById('edit-prod-category').value;
+      const unit = document.getElementById('edit-prod-unit').value.trim();
+      const price = parseInt(document.getElementById('edit-prod-price').value, 10) || 1000;
+      const oldPriceVal = document.getElementById('edit-prod-oldprice').value;
+      const oldPrice = oldPriceVal ? parseInt(oldPriceVal, 10) : null;
+      const supplier = document.getElementById('edit-prod-supplier').value.trim() || 'مزرعة رابح منصوري';
+      const badge = document.getElementById('edit-prod-badge').value.trim();
+      const image = document.getElementById('edit-prod-image').value.trim() || 'https://images.unsplash.com/photo-1574323347407-f5e1ad6d020b?w=500&auto=format&fit=crop&q=80';
+      const description = document.getElementById('edit-prod-desc').value.trim();
+
+      if (id) {
+        // Update existing product
+        const prod = MOCK_DATA.products.find(p => p.id === id);
+        if (prod) {
+          prod.name = name;
+          prod.category = category;
+          prod.unit = unit;
+          prod.price = price;
+          prod.oldPrice = oldPrice;
+          prod.supplier = supplier;
+          prod.badge = badge;
+          prod.image = image;
+          prod.description = description;
+          showToast(`تم تحديث بيانات المنتج "${name}" بنجاح! 💾`, 'success');
+        }
+      } else {
+        // Create new product
+        const newProd = {
+          id: `p_${Date.now()}`,
+          category: category,
+          name: name,
+          price: price,
+          oldPrice: oldPrice,
+          unit: unit,
+          rating: 5.0,
+          reviewsCount: 1,
+          supplier: supplier,
+          wilaya: 'setif',
+          image: image,
+          badge: badge || 'جديد بالمخزن',
+          description: description,
+          specs: { composition: 'صنف ممتاز عالي النقاوة', dosage: 'حسب إرشادات المرشد الفلاحي', origin: 'الجزائر - معتمد' },
+          inStock: true
+        };
+        MOCK_DATA.products.unshift(newProd);
+        showToast(`تمت إضافة وعرض "${name}" في المتجر بنجاح! 🚀`, 'success');
+      }
+
+      window.FarmateApp.closeModal('modal-edit-store-product');
+      renderStoreProducts();
+      window.FarmateApp.openManageStoreProductsModal();
+    },
+
+    deleteStoreProduct: function (prodId) {
+      const prod = MOCK_DATA.products.find(p => p.id === prodId);
+      const prodName = prod ? prod.name : 'المنتج';
+      MOCK_DATA.products = MOCK_DATA.products.filter(p => p.id !== prodId);
+      AppState.cart = AppState.cart.filter(item => item.id !== prodId);
+      AppState.favorites = AppState.favorites.filter(id => id !== prodId);
+      updateCartUI();
+      updateFavBadge();
+      renderStoreProducts();
+      showToast(`تم حذف "${prodName}" من المتجر بنجاح`, 'info');
+      window.FarmateApp.openManageStoreProductsModal();
     },
 
     // =========================================================================
@@ -2131,14 +2321,38 @@
     if (badge) badge.innerText = totalQty;
 
     const subtotal = AppState.cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
-    const delivery = subtotal > 10000 || subtotal === 0 ? 0 : 800;
+    const isVipFree = AppState.completedOrdersCount >= 5;
+    const delivery = (isVipFree || subtotal > 10000 || subtotal === 0) ? 0 : 800;
     const total = subtotal + delivery;
 
     if (subtotalEl) subtotalEl.innerText = `${subtotal.toLocaleString()} دج`;
     if (totalEl) totalEl.innerText = `${total.toLocaleString()} دج`;
 
     const delivEl = document.getElementById('cart-delivery-val');
-    if (delivEl) delivEl.innerText = delivery === 0 ? 'مجاني 🎁' : `${delivery.toLocaleString()} دج`;
+    if (delivEl) {
+      delivEl.innerText = delivery === 0 
+        ? (isVipFree ? 'مجاني 🎁 (وفاء VIP)' : 'مجاني 🎁') 
+        : `${delivery.toLocaleString()} دج`;
+    }
+
+    // Update Store & Cart Loyalty Banners
+    const loyaltyBadge = document.getElementById('loyalty-badge-tag');
+    const loyaltyDesc = document.getElementById('loyalty-desc-text');
+    const loyaltyFill = document.getElementById('loyalty-progress-fill');
+    
+    if (loyaltyBadge && loyaltyDesc && loyaltyFill) {
+      if (isVipFree) {
+        loyaltyBadge.innerText = '👑 فلاح وفي VIP';
+        loyaltyDesc.innerHTML = 'تهانينا! أنت مؤهل لـ <strong>شحن مجاني دائم</strong> لجميع طلبياتك الفلاحية 🎁';
+        loyaltyFill.style.width = '100%';
+        loyaltyFill.style.background = 'linear-gradient(90deg, #10B981, #F59E0B)';
+      } else {
+        const remaining = Math.max(0, 5 - AppState.completedOrdersCount);
+        loyaltyBadge.innerText = `⭐ برنامج الوفاء (${AppState.completedOrdersCount}/5)`;
+        loyaltyDesc.innerHTML = `أكمل <strong>${remaining} طلبية</strong> إضافية للحصول على <strong>شحن مجاني دائم</strong>! 🚚`;
+        loyaltyFill.style.width = `${Math.min(100, (AppState.completedOrdersCount / 5) * 100)}%`;
+      }
+    }
 
     if (!itemsList) return;
 
